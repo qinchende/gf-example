@@ -22,7 +22,7 @@ func tryGoRedis() {
 	}
 }
 
-// 初始化 sdx session redis
+// init sdx session with redis store
 func initRedisSession() {
 	sdxSess := jwtx.SdxSession{
 		SdxSessConfig: EnvParams.SdxSessCnf,

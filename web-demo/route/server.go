@@ -15,7 +15,7 @@ func serverSetup(app *fst.GoFast) {
 		logx.Info("App OnClose Call.")
 	})
 
-	// 根路由 +++++++++++++++++++++++++++++++++++++++++++++++
+	// 根路由 特殊情况处理 +++++++++++++++++++++++++++++
 	app.NoRoute(func(ctx *fst.Context) {
 		ctx.JSON(http.StatusNotFound, "404-Can't find the path.")
 	})
