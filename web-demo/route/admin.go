@@ -6,9 +6,9 @@ import (
 )
 
 func adminGroup(gp *fst.RouterGroup) {
-	admGroup := gp.Group("/admin")
-	admA := admGroup.Group("/a")
-	admB := admGroup.Group("/b")
+	admGroup := gp.Group("/admin") // admin 组
+	admA := admGroup.Group("/a")   // admin 组 下面又分 a 组
+	admB := admGroup.Group("/b")   // admin 组 下面又分 b 组
 
 	admGroup.Before(admin.BeforeA)
 	admGroup.GetPost("/set", admin.SetParams) // GET 和 POST 同时支持
