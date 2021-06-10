@@ -18,7 +18,7 @@ func tryGoRedis() {
 	if err != nil {
 		fmt.Println("Ping failed", err)
 	} else {
-		fmt.Printf("Ping val is %s\n", pong)
+		fmt.Printf("Ping val is %s", pong)
 	}
 }
 

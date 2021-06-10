@@ -6,6 +6,6 @@ import (
 	"net/http"
 )
 
-func FitDemo(w *fst.GFResponse, r *http.Request) {
-	logx.Info("Handler fit demo.")
+func MyFitDemo(w *fst.GFResponse, r *http.Request) {
+	logx.Info("Handler my fit demo.")
 }
