@@ -1,10 +1,14 @@
 package route
 
 import (
+	"gf-example/web-demo/route/auth"
+	"gf-example/web-demo/route/ghost"
 	"gf-example/web-demo/route/mid"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
+	"github.com/qinchende/gofast/logx"
+	"net/http"
 )
 
 func LoadRoutes(app *fst.GoFast) {
@@ -23,15 +27,33 @@ func LoadRoutes(app *fst.GoFast) {
 
 	// +++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
-	gpNoAuth := app.Group("/")
-	noAuthGroup(gpNoAuth)
+	gpGhost := app.Group("/")
+	ghost.AuthGroup(gpGhost)
 
 	// +++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
 	gpAuth := app.Group("/")
 	gpAuth.Before(jwtx.SdxMustLogin) // 验证当前请求是否已经登录
 
-	adminGroup(gpAuth)
-	hrGroup(gpAuth)
-	crmGroup(gpAuth)
+	auth.AdminGroup(gpAuth)
+	auth.HRGroup(gpAuth)
+	auth.CrmGroup(gpAuth)
+}
+
+func serverSetup(app *fst.GoFast) {
+	// 应用级事件
+	app.OnReady(func(fast *fst.GoFast) {
+		logx.Info("App OnReady Call.")
+	})
+	app.OnClose(func(fast *fst.GoFast) {
+		logx.Info("App OnClose Call.")
+	})
+
+	// 根路由 特殊情况处理 +++++++++++++++++++++++++++++
+	app.NoRoute(func(ctx *fst.Context) {
+		ctx.JSON(http.StatusNotFound, "404-Can't find the path.")
+	})
+	app.NoMethod(func(ctx *fst.Context) {
+		ctx.JSON(http.StatusMethodNotAllowed, "405-Method not allowed.")
+	})
 }
