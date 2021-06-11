@@ -1,11 +1,11 @@
-package route
+package auth
 
 import (
 	"gf-example/web-demo/logic/crm"
 	"github.com/qinchende/gofast/fst"
 )
 
-func crmGroup(gp *fst.RouterGroup) {
+func CrmGroup(gp *fst.RouterGroup) {
 	crmGroup := gp.Group("/crm")
 
 	crmGroup.Before(crm.BeforeA)

@@ -5,8 +5,13 @@ import (
 	"github.com/qinchende/gofast/logx"
 )
 
-func BeforeA(ctx *fst.Context) {
-	logx.Info("Handler auth.BeforeA")
+func BeforeLogin(ctx *fst.Context) {
+	logx.Info("Handler auth.BeforeLogin")
+}
+
+type item struct {
+	Key   string
+	Value string
 }
 
 func LoginDemo(ctx *fst.Context) {
