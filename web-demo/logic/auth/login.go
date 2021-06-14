@@ -9,11 +9,6 @@ func BeforeLogin(ctx *fst.Context) {
 	logx.Info("Handler auth.BeforeLogin")
 }
 
-type item struct {
-	Key   string
-	Value string
-}
-
 func LoginDemo(ctx *fst.Context) {
 	// 模拟验证登录，写入 user_id
 	account := ctx.Pms["account"]
