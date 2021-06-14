@@ -1,18 +1,32 @@
 package hr
 
 import (
+	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 )
 
-func AddUser(ctx *fst.Context) {
+func AddUser(c *fst.Context) {
 	logx.Info("Handler hr.AddUser")
 
-	ctx.SucKV(fst.KV{"name": "chen de"})
-}
+	newUser := hr.User{}
+	if err := c.BindPms(&newUser); err != nil {
+		c.Fai("参数错误")
+		return
+	}
 
-func AddDepartment(ctx *fst.Context) {
-	logx.Info("Handler hr.AddDepartment")
+	newTitle := hr.Title{}
+	if err := c.BindPms(&newTitle); err != nil {
+		c.Fai("参数错误")
+		return
+	}
 
-	ctx.SucKV(fst.KV{"depart": "system"})
+	newDepart := hr.Department{}
+	if err := c.BindPms(&newDepart); err != nil {
+		c.Fai("参数错误")
+		return
+	}
+
+	c.SucMsg("Saved.", newUser)
+	//c.SucKV(fst.KV{"name": "chen de"})
 }
