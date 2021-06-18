@@ -13,7 +13,7 @@ import (
 type YmlConfig struct {
 	WebServerCnf fst.AppConfig      `json:",optional"`
 	SdxSessCnf   jwtx.SdxSessConfig `json:",optional"`
-	LogCnf       logx.LogConfig     `json:",optional"`
+	LogConfig    logx.LogConfig     `json:",optional"`
 	SqlGoZeroCnf mysql.ConnConfig   `json:",optional"`
 }
 
@@ -23,7 +23,7 @@ var cfgFile = flag.String("f", "config/env.yaml", "-f env.[yaml|yml|json]")
 func InitEnvConfig() {
 	flag.Parse()
 	conf.MustLoad(*cfgFile, &EnvParams)
-	fstx.InitLogger(&EnvParams.LogCnf)
+	fstx.InitLogger(&EnvParams.LogConfig)
 
 	// initGoRedis()
 	// tryGoRedis()
