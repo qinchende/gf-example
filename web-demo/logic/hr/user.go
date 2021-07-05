@@ -11,22 +11,22 @@ func AddUser(c *fst.Context) {
 
 	newUser := hr.User{}
 	if err := c.BindPms(&newUser); err != nil {
-		c.Fai("参数错误")
+		c.FaiMsg("参数错误")
 		return
 	}
 
 	newTitle := hr.Title{}
 	if err := c.BindPms(&newTitle); err != nil {
-		c.Fai("参数错误")
+		c.FaiMsg("参数错误")
 		return
 	}
 
 	newDepart := hr.Department{}
 	if err := c.BindPms(&newDepart); err != nil {
-		c.Fai("参数错误")
+		c.FaiMsg("参数错误")
 		return
 	}
 
-	c.SucMsg("Saved.", newUser)
+	c.Suc(0, "Saved.", newUser)
 	//c.SucKV(fst.KV{"name": "chen de"})
 }

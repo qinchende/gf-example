@@ -8,10 +8,10 @@ import (
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
 	"github.com/qinchende/gofast/logx"
-	"net/http"
 )
 
-func serverSetup(app *fst.GoFast) {
+func LoadRoutes(app *fst.GoFast) {
+	// 1. 基础
 	// 应用级事件
 	app.OnReady(func(fast *fst.GoFast) {
 		logx.Info("App OnReady Call.")
@@ -20,23 +20,18 @@ func serverSetup(app *fst.GoFast) {
 		logx.Info("App OnClose Call.")
 	})
 
-	// 根路由 特殊情况处理 +++++++++++++++++++++++++++++
-	app.NoRoute(func(ctx *fst.Context) {
-		ctx.JSON(http.StatusNotFound, "404-Can't find the path.")
-	})
-	app.NoMethod(func(ctx *fst.Context) {
-		ctx.JSON(http.StatusMethodNotAllowed, "405-Method not allowed.")
-	})
-}
-
-func LoadRoutes(app *fst.GoFast) {
-	// 1. 基础
-	serverSetup(app)
+	// 根路由 特殊情况处理, 不写的话就是默认处理函数
+	//app.NoRoute(func(ctx *fst.Context) {
+	//	ctx.String(http.StatusNotFound, "404-Can't find the path.")
+	//})
+	//app.NoMethod(func(ctx *fst.Context) {
+	//	ctx.String(http.StatusMethodNotAllowed, "405-Method not allowed.")
+	//})
 
 	// 2. 全局中间件（拦截器）
 	// Note: 请求进来，并没有定位到具体的路由。就需要走这些过滤器
 	// 所有的请求都要走这里指定的拦截器，发生错误就直接中断返回
-	app.InjectFits(fstx.AddDefaultFits)
+	app.Fits(fstx.AddDefaultFits)
 	app.Fit(mid.MyFitDemo)
 
 	// 3. 根路由，中间件。
