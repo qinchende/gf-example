@@ -8,7 +8,7 @@ import (
 // 这里的路由不需要登录
 func AuthGroup(gp *fst.RouterGroup) {
 	gp.Before(auth.BeforeLogin)
-	gp.Get("/login/:id/:name", auth.LoginDemo)
+	gp.Get("/login", auth.LoginDemo)
 
 	// POST
 	gp.Post("/bind_demo", auth.BindDemo).Before(auth.BeforeBindDemo).After(auth.AfterBindDemo).PreSend(auth.BeforeBindDemoSend).AfterSend(auth.AfterBindDemoSend)
