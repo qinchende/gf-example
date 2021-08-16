@@ -6,14 +6,12 @@ import (
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
-	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/skill/conf"
 )
 
 type YmlConfig struct {
 	WebServerCnf fst.AppConfig      `json:",optional"`
 	SdxSessCnf   jwtx.SdxSessConfig `json:",optional"`
-	LogConfig    logx.LogConfig     `json:",optional"`
 	SqlGoZeroCnf mysql.ConnConfig   `json:",optional"`
 }
 
@@ -23,7 +21,7 @@ var cfgFile = flag.String("f", "config/env.yaml", "-f env.[yaml|yml|json]")
 func InitEnvConfig() {
 	flag.Parse()
 	conf.MustLoad(*cfgFile, &EnvParams)
-	fstx.InitLogger(&EnvParams.LogConfig)
+	fstx.InitLogger(&EnvParams.WebServerCnf.LogConfig)
 
 	// initGoRedis()
 	// tryGoRedis()
