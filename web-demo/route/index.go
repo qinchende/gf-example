@@ -58,6 +58,9 @@ func LoadRoutes(app *fst.GoFast) {
 	gpAuth := app.Group("/")
 	gpAuth.Before(jwtx.SdxMustLogin) // 检查当前请求是否已经登录
 
+	// logout
+	gpAuth.Get("/logout", auth.Logout)
+
 	// Admin
 	adm := gpAuth.Group("/admin").Before(admin.BeforeA) // admin 组
 	adm.GetPost("/set", admin.SetParams)                // GET 和 POST 同时支持
