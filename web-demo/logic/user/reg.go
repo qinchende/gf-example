@@ -12,19 +12,30 @@ func RegByMobile(ctx *fst.Context) {
 	sVCode := ctx.Sess.Get("v_code")
 	pVCode := ctx.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		ctx.FaiMsg("验证码错误")
+		ctx.FaiMsg("invalid mobile valid code")
 		return
 	}
 
 	u := hr.User{}
-	if err := ctx.BindPms(u); err != nil {
-		ctx.FaiMsg("数据绑定失败。")
+	if err := ctx.BindPms(&u); err != nil {
+		ctx.FaiMsg("BindPms err: " + err.Error())
 		return
 	}
 
-	// 注册，清理必要的数据，返回成功
-	r := config.MysqlZero.Exec("insert into sys_users(account,name,age,nickname)values(?, ?, ?, ?)",
-		u.Account, u.Name, u.Age, u.Nickname)
-	id, _ := r.LastInsertId()
-	ctx.SucKV(fst.KV{"id": id})
+	//// 方式一：拼接sql语句。
+	//// 注册，清理必要的数据，返回成功
+	//r := config.MysqlZero.Exec("insert into sys_users(account,name,age,nickname,created_at,updated_at)values(?, ?, ?, ?, now(), now())",
+	//	u.Account, u.Name, u.Age, u.Nickname)
+	//id, _ := r.LastInsertId()
+	//ctx.SucKV(fst.KV{"id": id})
+	//return
+
+	// 方式二：ORM保存
+	ret := config.GormZero.Create(&u)
+	if ret.Error != nil {
+		ctx.FaiMsg("Created err: " + ret.Error.Error())
+		return
+	}
+	ctx.SucKV(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
+	return
 }
