@@ -1,9 +1,15 @@
 package hr
 
+import "gf-example/web-demo/model"
+
 type User struct {
-	Id       int
-	Account  string `pms:"account" binding:"required"`
-	Name     string `pms:"name" binding:"required"`
-	Nickname string `pms:"nickname"`
-	Age      int16  `pms:"age" binding:"required"`
+	model.CommonModel
+	Account  string `json:"account" pms:"account" binding:"required"`
+	Name     string `json:"name" pms:"name" binding:"required"`
+	Nickname string `json:"nickname" pms:"nickname"`
+	Age      int16  `json:"age" pms:"age" binding:"required"`
+}
+
+func (User) TableName() string {
+	return "sys_users"
 }

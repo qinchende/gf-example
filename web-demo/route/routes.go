@@ -18,6 +18,7 @@ func routesList(app *fst.GoFast) {
 	gpGhost.Get("/mobile_code", sms.SendPhoneCode)
 	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin)
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
+	gpGhost.Get("/user_list", hr.UserList)
 
 	//// GET
 	//gpGhost.Get("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
