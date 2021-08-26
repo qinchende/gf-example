@@ -31,7 +31,8 @@ import (
 //	//c.SucKV(fst.KV{"name": "chen de"})
 //}
 
-// curl -H "Content-Type: application/json" --data '{}' -X GET http://127.0.0.1:8078/user_list
+// curl -i -H "Content-Type: application/json" -X GET http://127.0.0.1:8078/user_list
+// curl -i -H "Content-Type: application/json" --data '{}' -X GET http://127.0.0.1:8078/user_list
 func UserList(c *fst.Context) {
 	var users []hr.User
 	config.GormZero.Find(&users, []int{1, 2})
