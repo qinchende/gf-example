@@ -9,19 +9,19 @@ import (
 	"github.com/qinchende/gofast/skill/conf"
 )
 
-type YmlConfig struct {
-	WebServerCnf fst.AppConfig      `json:",optional"`
-	SdxSessCnf   jwtx.SdxSessConfig `json:",optional"`
-	SqlGoZeroCnf mysql.ConnConfig   `json:",optional"`
+type SysConfigEntity struct {
+	WebServerCnf fst.AppConfig      `cnf:",NA"`
+	SdxSessCnf   jwtx.SdxSessConfig `cnf:",NA"`
+	SqlGoZeroCnf mysql.ConnConfig   `cnf:",NA"`
 }
 
-var EnvParams YmlConfig
-var cfgFile = flag.String("f", "config/env.yaml", "-f env.[yaml|yml|json]")
+var SysCnf SysConfigEntity
+var cnfFile = flag.String("f", "config/env.yaml", "-f env.[yaml|yml|json]")
 
 func InitEnvConfig() {
 	flag.Parse()
-	conf.MustLoad(*cfgFile, &EnvParams)
-	fstx.InitLogger(&EnvParams.WebServerCnf.LogConfig)
+	conf.MustLoad(*cnfFile, &SysCnf)
+	fstx.InitLogger(&SysCnf.WebServerCnf.LogConfig)
 
 	// initGoRedis()
 	// tryGoRedis()

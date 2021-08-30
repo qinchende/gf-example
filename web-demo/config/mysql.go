@@ -7,5 +7,5 @@ import (
 var MysqlZero *mysql.MSqlX
 
 func initMysql() {
-	MysqlZero = mysql.NewMysqlConn(&EnvParams.SqlGoZeroCnf)
+	MysqlZero = mysql.NewMysqlConn(&SysCnf.SqlGoZeroCnf)
 }
