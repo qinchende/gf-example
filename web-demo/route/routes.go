@@ -15,8 +15,8 @@ func routesList(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
-	gpGhost.Get("/mobile_code", sms.SendPhoneCode)
 	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin)
+	gpGhost.GetPost("/mobile_code", sms.SendPhoneCode)
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Get("/user_list", hr.UserList)
 
