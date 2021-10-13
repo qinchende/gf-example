@@ -1,10 +1,13 @@
 package route
 
 import (
+	"fmt"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
 	"github.com/qinchende/gofast/logx"
+	"runtime"
+	"time"
 )
 
 func LoadRoutes(app *fst.GoFast) {
@@ -12,6 +15,14 @@ func LoadRoutes(app *fst.GoFast) {
 	// 应用级事件
 	app.OnReady(func(fast *fst.GoFast) {
 		logx.Info("App OnReady Call.")
+
+		// 定时打印当前进程中G的数量
+		go func() {
+			for {
+				fmt.Println("=== Number of goroutines: ", runtime.NumGoroutine())
+				time.Sleep(10 * time.Second)
+			}
+		}()
 	})
 	app.OnClose(func(fast *fst.GoFast) {
 		logx.Info("App OnClose Call.")
