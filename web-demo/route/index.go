@@ -29,10 +29,10 @@ func LoadRoutes(app *fst.GoFast) {
 	// 2.1. 全局中间件（拦截器）
 	// Note: 请求进来，并没有定位到具体的路由。就需要走这些过滤器
 	// 所有的请求都要走这里指定的拦截器，发生错误就直接中断返回
-	app.RegFits(fstx.DefaultFits) // 默认的一组中间件
-	app.Fit(mid.MyFitDemo)        // 自定义中间件
+	app.Apply(fstx.DefaultFits) // 默认的一组中间件
+	app.Fit(mid.MyFitDemo)      // 自定义中间件
 	// 2.2. 全局，第二级中间件
-	app.RegHandlers(fstx.DefaultHandlers)
+	app.Apply(fstx.DefaultHandlers)
 
 	// 3. 根路由，中间件。
 	// Note: 匹配到路由之后开始走这里的逻辑，执行过滤器
