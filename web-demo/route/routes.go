@@ -8,6 +8,7 @@ import (
 	"gf-example/web-demo/logic/sms"
 	"gf-example/web-demo/logic/user"
 	"github.com/qinchende/gofast/fst"
+	"github.com/qinchende/gofast/fst/mid"
 	"github.com/qinchende/gofast/jwtx"
 )
 
@@ -15,7 +16,7 @@ func routesList(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
-	gpGhost.Get("/login", auth.LoginByAccPass).Config(&fst.RIConfig{MaxReq: 10}).Before(auth.BeforeLogin)
+	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RouteConfig{MaxReq: 10})
 	gpGhost.GetPost("/mobile_code", sms.SendPhoneCode)
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Get("/user_list", hr.UserList)
