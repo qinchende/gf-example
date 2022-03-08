@@ -16,11 +16,12 @@ func routesList(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
-	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{MaxReq: 10, Timeout: 123000})
+	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{Timeout: 12000})
 
+	// Get,Post支持单独定义配置参数
 	get, post := gpGhost.GetPost("/mobile_code", sms.SendPhoneCode)
-	get.Config(&mid.RConfig{MaxReq: 11, Timeout: 211000})
-	post.Config(&mid.RConfig{MaxReq: 12, Timeout: 321000})
+	get.Config(&mid.RConfig{Timeout: 1000, MaxLen: 10000})
+	post.Config(&mid.RConfig{Timeout: 321000})
 
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Get("/user_list", hr.UserList)
