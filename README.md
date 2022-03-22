@@ -2,7 +2,7 @@
 
 ## Installation
 
-从这里开始体验GoFast框架的开发魅力。
+从这里开始体验GoFast框架。
 
 ```sh
 $ go get -u github.com/qinchende/gofast

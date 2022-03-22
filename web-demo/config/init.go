@@ -27,5 +27,5 @@ func InitEnvConfig() {
 	// tryGoRedis()
 	initRedisSession()
 	initMysql()
-	initGorm()
+	//initGorm()
 }
