@@ -34,7 +34,7 @@ import (
 // curl -i -H "Content-Type: application/json" -X GET http://127.0.0.1:8078/user_list
 // curl -i -H "Content-Type: application/json" --data '{}' -X GET http://127.0.0.1:8078/user_list
 func UserList(c *fst.Context) {
-	var users []hr.User
+	var users []hr.SysUser
 	config.GormZero.Find(&users, []int{1, 2})
 
 	c.Suc(0, "two", users)

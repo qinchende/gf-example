@@ -1,8 +1,14 @@
 package hr
 
+import "gf-example/web-demo/model"
+
 type Title struct {
-	Id    int16
+	model.CommonFields
 	Level int16
-	Name  string `json:"name" pms:"name" binding:"required"`
-	Desc  string `json:"desc" pms:"desc"`
+	Name  string `pms:"name" valid:"required"`
+	Desc  string `pms:"desc" valid:"omitempty"`
+}
+
+func (Title) TableName() string {
+	return "sys_title"
 }

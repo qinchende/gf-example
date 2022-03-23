@@ -9,7 +9,7 @@ import (
 var RedisA *redis.GoRedisX
 
 func initGoRedis() {
-	RedisA = redis.NewGoRedis(&SysCnf.SdxSessCnf.RedisConnCnf)
+	RedisA = redis.NewGoRedis(&AppCnf.SdxSessCnf.RedisConnCnf)
 }
 
 func tryGoRedis() {
@@ -25,7 +25,7 @@ func tryGoRedis() {
 // init sdx session with redis store
 func initRedisSession() {
 	sdxSess := jwtx.SdxSession{
-		SdxSessConfig: SysCnf.SdxSessCnf,
+		SdxSessConfig: AppCnf.SdxSessCnf,
 	}
 	sdxSess.Init()
 }

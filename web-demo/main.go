@@ -17,7 +17,7 @@ func init() {
 func main() {
 	// TODO: 1. 初始化配置，连接数据库，创建Server
 	config.InitEnvConfig()
-	app := fst.CreateServer(&config.SysCnf.WebServerCnf)
+	app := fst.CreateServer(&config.AppCnf.WebServerCnf)
 	logx.Info(app.Name + " server created.")
 
 	// TODO：2. 加载中间件、路由
