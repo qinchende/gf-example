@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql"
 	"time"
 )
 
@@ -11,18 +12,30 @@ import (
 
 // GoFast框架的ORM定义，所有Model必须公用的方法
 type CommonFields struct {
-	ID        uint      `dbc:"primary_field"`
+	ID        uint32    `dbc:"primary_field"`
 	Status    int8      `valid:"min=-3"`
-	CreatedAt time.Time `dbf:"created_at" dbc:"created_field"`
-	UpdatedAt time.Time `dbf:"updated_at" dbc:"updated_field"`
+	CreatedAt time.Time `dbc:"created_field"`
+	UpdatedAt time.Time `dbc:"updated_field"`
 }
 
-// 保存之前修改相关字段
+func (cf *CommonFields) TableName() string {
+	return ""
+}
+
 // TODO: 万一更新失败，这里的值已经修改，需要回滚吗？？？
 func (cf *CommonFields) BeforeSave() {
 	if cf.ID == 0 && cf.CreatedAt.IsZero() {
 		cf.CreatedAt = time.Now()
 	}
 	cf.UpdatedAt = time.Now()
-	cf.Status = 99
+}
+
+func (cf *CommonFields) AfterInsert(result sql.Result) {
+	lstId, err := result.LastInsertId()
+	if err == nil {
+		cf.ID = uint32(lstId)
+	} else {
+		cf.CreatedAt = time.Time{}
+		cf.UpdatedAt = time.Time{}
+	}
 }

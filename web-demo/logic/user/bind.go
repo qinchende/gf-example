@@ -27,7 +27,7 @@ func AfterBindDemoSend(ctx *fst.Context) {
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
 func BindDemo(ctx *fst.Context) {
-	user := hr.User{}
+	user := hr.SysUser{}
 	if err := ctx.BindPms(&user); err != nil {
 		ctx.FaiErr(err)
 		return
