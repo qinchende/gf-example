@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gf-example/web-demo/config"
+	"gf-example/web-demo/cf"
 	"gf-example/web-demo/route"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
@@ -16,8 +16,8 @@ func init() {
 
 func main() {
 	// TODO: 1. 初始化配置，连接数据库，创建Server
-	config.InitEnvConfig()
-	app := fst.CreateServer(&config.AppCnf.WebServerCnf)
+	cf.InitEnvConfig()
+	app := fst.CreateServer(&cf.AppCnf.WebServerCnf)
 	logx.Info(app.Name + " server created.")
 
 	// TODO：2. 加载中间件、路由

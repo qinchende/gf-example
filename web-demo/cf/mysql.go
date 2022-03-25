@@ -1,12 +1,12 @@
-package config
+package cf
 
 import (
 	"github.com/qinchende/gofast/connx/mysql"
 	"github.com/qinchende/gofast/store/sqlx"
 )
 
-var MysqlZero *sqlx.MysqlORM
+var Zero *sqlx.MysqlORM
 
 func initMysql() {
-	MysqlZero = mysql.NewMysqlConn(&AppCnf.SqlGoZeroCnf)
+	Zero = mysql.NewMysqlConn(&AppCnf.SqlGoZeroCnf)
 }

@@ -1,7 +1,7 @@
 package hr
 
 import (
-	"gf-example/web-demo/config"
+	"gf-example/web-demo/cf"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 )
@@ -35,7 +35,7 @@ import (
 // curl -i -H "Content-Type: application/json" --data '{}' -X GET http://127.0.0.1:8078/user_list
 func UserList(c *fst.Context) {
 	var users []hr.SysUser
-	config.GormZero.Find(&users, []int{1, 2})
+	cf.GormZero.Find(&users, []int{1, 2})
 
 	c.Suc(0, "two", users)
 }
