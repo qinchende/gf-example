@@ -1,4 +1,4 @@
-package config
+package cf
 
 import (
 	"flag"
@@ -16,7 +16,7 @@ type AppConfigEntity struct {
 }
 
 var AppCnf AppConfigEntity
-var cnfFile = flag.String("f", "config/env.yaml", "-f env.[yaml|yml|json]")
+var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
 
 func InitEnvConfig() {
 	flag.Parse()

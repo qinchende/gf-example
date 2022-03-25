@@ -1,9 +1,10 @@
 package user
 
 import (
-	"gf-example/web-demo/config"
+	"gf-example/web-demo/cf"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
+	"github.com/qinchende/gofast/logx"
 )
 
 // curl -H "Content-Type: application/json" -X POST --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_mobile
@@ -41,18 +42,21 @@ func RegByMobile(ctx *fst.Context) {
 	//return
 
 	// 方式三：GoFast自带ORM功能
-	config.MysqlZero.Insert(&u)
+	cf.Zero.Insert(&u)
 
 	u.Name = "chende"
-	config.MysqlZero.Update(&u)
+	cf.Zero.Update(&u)
 
 	u.Name = "wang"
-	u.Age = 78
-	u.Status = 3
-	config.MysqlZero.UpdateByNames(&u, "Age", "Status")
+	u.Age = 91
+	u.Status = 1
+	cf.Zero.UpdateColumns(&u, "Age", "Status")
 
-	//u.Email = "chende@TL50.com"
-	//config.MysqlZero.UpdateColumns(&u, u.Email)
+	newUser := hr.SysUser{}
+	cf.Zero.QueryID(&newUser, u.ID)
+	logx.Info(newUser)
+
+	cf.Zero.Delete(&u)
 
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
