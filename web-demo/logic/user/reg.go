@@ -30,13 +30,13 @@ func RegByMobile(ctx *fst.Context) {
 	//id, _ := r.LastInsertId()
 
 	//// 方式二：Gorm 三方包保存
-	//ret := config.GormZero.Create(&u)
+	//ret := cf.GormZero.Create(&u)
 	//if ret.Error != nil {
 	//	ctx.FaiMsg("Created err: " + ret.Error.Error())
 	//	return
 	//}
 	//u.Age = 49
-	//config.GormZero.Updates(&u)
+	//cf.GormZero.Updates(&u)
 	//
 	//ctx.SucKV(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
 	//return
@@ -56,7 +56,16 @@ func RegByMobile(ctx *fst.Context) {
 	cf.Zero.QueryID(&newUser, u.ID)
 	logx.Info(newUser)
 
-	cf.Zero.Delete(&u)
+	users := cf.Zero.QueryWhere(&hr.SysUser{}, "age=91")
+	for _, user := range users {
+		u := user.(hr.SysUser)
+		logx.Info(u.ID)
+	}
+	//logx.Info(users)
+
+	cf.Zero.QueryDemo(hr.TypeUser)
+
+	//cf.Zero.Delete(&u)
 
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return

@@ -2,7 +2,10 @@ package hr
 
 import (
 	"gf-example/web-demo/model"
+	"reflect"
 )
+
+var TypeUser reflect.Type = reflect.TypeOf(SysUser{})
 
 type SysUser struct {
 	model.CommonFields
