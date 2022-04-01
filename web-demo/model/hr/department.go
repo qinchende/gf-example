@@ -8,6 +8,6 @@ type Department struct {
 	Name     string `pms:"name" valid:"required"`
 }
 
-func (Department) TableName() string {
+func (*Department) TableName() string {
 	return "sys_department"
 }
