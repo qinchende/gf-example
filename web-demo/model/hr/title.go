@@ -9,6 +9,6 @@ type Title struct {
 	Desc  string `pms:"desc" valid:"omitempty"`
 }
 
-func (Title) TableName() string {
+func (*Title) TableName() string {
 	return "sys_title"
 }
