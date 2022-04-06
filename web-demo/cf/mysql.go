@@ -8,5 +8,5 @@ import (
 var Zero *sqlx.MysqlORM
 
 func initMysql() {
-	Zero = mysql.NewMysqlConn(&AppCnf.SqlGoZeroCnf)
+	Zero = mysql.OpenMysql(&AppCnf.SqlGoZeroCnf)
 }

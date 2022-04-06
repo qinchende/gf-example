@@ -85,18 +85,54 @@ func RegByMobile(ctx *fst.Context) {
 
 	records := new([]fst.KV)
 	ct = cf.Zero.QueryPet(records, &sqlx.SelectPet{
-		Sql: "select * from sys_user where age=? and status=0",
-		//Table:   "sys_user",
-		//Columns: "id,name,age,status",
-		//Offset:  3,
-		//Limit:   9,
-		//Where:   "age=? and status=0",
-		Prams: []interface{}{78},
+		//Sql: "select * from sys_user where age=? and status=0",
+		Table:   "sys_user",
+		Columns: "id,name,age,status",
+		Offset:  3,
+		Limit:   9,
+		Where:   "age=? and status=0",
+		Prams:   []interface{}{78},
+	})
+	logx.Info((*records)[0])
+
+	cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
+		ConnType:  sqlx.ConnWriter,
+		CacheType: sqlx.CacheMem,
+		Table:     "sys_user",
+		Columns:   "id,name,age,status",
+		Offset:    3,
+		Limit:     9,
+		Where:     "age=? and status=0",
+		Prams:     []interface{}{78},
 	})
 	logx.Info((*records)[0])
 
 	ct = cf.Zero.Delete(&u)
 
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt, "R": (*records)[0]})
+	return
+}
+
+// curl -H "Content-Type: application/json" -X POST --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_email
+func RegByEmail(ctx *fst.Context) {
+	sVCode := ctx.Sess.Get("v_code")
+	pVCode := ctx.Pms["v_code"]
+	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
+		ctx.FaiMsg("invalid mobile valid code")
+		return
+	}
+
+	u := hr.SysUser{}
+	if err := ctx.BindPms(&u); err != nil {
+		ctx.FaiMsg(err.Error())
+		return
+	}
+	logx.Info(u)
+
+	trans := cf.Zero.Begin()
+	trans.Insert(&u)
+	_ = trans.Commit()
+
+	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
 }
