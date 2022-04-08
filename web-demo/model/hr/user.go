@@ -18,7 +18,8 @@ type SysUser struct {
 //	return "`sys_user`"
 //}
 
-// ++++++++++++++++++++++++++++++++++++++++++
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// 适合 Gorm的model定义
 type SysUserDemo struct {
 	ID        uint32    `dbc:"primary_field"`
 	Status    int8      `valid:"min=-3"`

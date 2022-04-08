@@ -39,6 +39,3 @@ func (cf *CommonFields) AfterInsert(result sql.Result) {
 		cf.UpdatedAt = time.Time{}
 	}
 }
-
-//func (cf *CommonFields) AfterQuery(rows *sql.Rows) {
-//}
