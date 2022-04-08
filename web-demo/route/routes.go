@@ -24,6 +24,7 @@ func routesList(app *fst.GoFast) {
 	post.Config(&mid.RConfig{Timeout: 321000})
 
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
+	gpGhost.Post("/reg_by_email", user.RegByEmail)
 	gpGhost.Get("/user_list", hr.UserList)
 
 	//// GET

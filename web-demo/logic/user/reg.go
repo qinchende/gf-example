@@ -96,19 +96,19 @@ func RegByMobile(ctx *fst.Context) {
 	logx.Info((*records)[0])
 
 	cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
-		ConnType:  sqlx.ConnWriter,
 		CacheType: sqlx.CacheMem,
-		Table:     "sys_user",
-		Columns:   "id,name,age,status",
-		Offset:    3,
-		Limit:     9,
-		Where:     "age=? and status=0",
-		Prams:     []interface{}{78},
+		SelectPet: sqlx.SelectPet{
+			Table:   "sys_user",
+			Columns: "id,name,age,status",
+			Offset:  3,
+			Limit:   9,
+			Where:   "age=? and status=0",
+			Prams:   []interface{}{78},
+		},
 	})
 	logx.Info((*records)[0])
 
 	ct = cf.Zero.Delete(&u)
-
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt, "R": (*records)[0]})
 	return
 }
@@ -129,10 +129,24 @@ func RegByEmail(ctx *fst.Context) {
 	}
 	logx.Info(u)
 
-	trans := cf.Zero.Begin()
-	trans.Insert(&u)
-	_ = trans.Commit()
+	// 数据库事务的测试
+	//zero := cf.Zero.Trans()
+	//defer zero.EndTrans()
+	//zero.Insert(&u)
+	//
+	//myUsers := make([]*hr.SysUser, 0)
+	//ct := cf.Zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
+	//logx.Info(ct)
 
-	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
+	myUsers := make([]*hr.SysUser, 0)
+	cf.Zero.TransFunc(func(zero *sqlx.MysqlORM) {
+		zero.Insert(&u)
+		logx.Info(u)
+
+		ct := cf.Zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
+		logx.Info(ct)
+	})
+
+	ctx.SucKV(fst.KV{"record": *myUsers[0]})
 	return
 }
