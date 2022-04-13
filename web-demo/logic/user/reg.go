@@ -88,25 +88,29 @@ func RegByMobile(ctx *fst.Context) {
 		//Sql: "select * from sys_user where age=? and status=0",
 		Table:   "sys_user",
 		Columns: "id,name,age,status",
-		Offset:  3,
+		Offset:  1,
 		Limit:   9,
 		Where:   "age=? and status=0",
 		Prams:   []interface{}{78},
 	})
-	logx.Info((*records)[0])
+	if ct > 0 {
+		logx.Info((*records)[0])
+	}
 
 	cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
 		CacheType: sqlx.CacheMem,
 		SelectPet: sqlx.SelectPet{
 			Table:   "sys_user",
 			Columns: "id,name,age,status",
-			Offset:  3,
+			Offset:  1,
 			Limit:   9,
 			Where:   "age=? and status=0",
 			Prams:   []interface{}{78},
 		},
 	})
-	logx.Info((*records)[0])
+	if len(*records) > 0 {
+		logx.Info((*records)[0])
+	}
 
 	ct = cf.Zero.Delete(&u)
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt, "R": (*records)[0]})
@@ -130,10 +134,9 @@ func RegByEmail(ctx *fst.Context) {
 	logx.Info(u)
 
 	// 数据库事务的测试
-	//zero := cf.Zero.Trans()
-	//defer zero.EndTrans()
+	//zero := cf.Zero.TransBegin()
+	//defer zero.TransEnd()
 	//zero.Insert(&u)
-	//
 	//myUsers := make([]*hr.SysUser, 0)
 	//ct := cf.Zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
 	//logx.Info(ct)

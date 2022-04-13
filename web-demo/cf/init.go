@@ -2,7 +2,7 @@ package cf
 
 import (
 	"flag"
-	"github.com/qinchende/gofast/connx/mysql"
+	"github.com/qinchende/gofast/connx/gform"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
@@ -10,9 +10,9 @@ import (
 )
 
 type AppConfigEntity struct {
-	WebServerCnf fst.AppConfig      `cnf:",NA"`
-	SdxSessCnf   jwtx.SdxSessConfig `cnf:",NA"`
-	SqlGoZeroCnf mysql.ConnConfig   `cnf:",NA"`
+	WebServerCnf   fst.AppConfig   `cnf:",NA"`
+	SdxSessCnf     jwtx.SdxSessCnf `cnf:",NA"`
+	MysqlGoZeroCnf gform.ConnCnf   `cnf:",NA"`
 }
 
 var AppCnf AppConfigEntity
