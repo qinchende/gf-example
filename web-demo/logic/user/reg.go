@@ -98,6 +98,7 @@ func RegByMobile(ctx *fst.Context) {
 	}
 
 	cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
+		ExpireS:   12 * 3600,
 		CacheType: sqlx.CacheMem,
 		SelectPet: sqlx.SelectPet{
 			Table:   "sys_user",
@@ -111,6 +112,10 @@ func RegByMobile(ctx *fst.Context) {
 	if len(*records) > 0 {
 		logx.Info((*records)[0])
 	}
+
+	ccUser := hr.SysUser{}
+	ct = cf.Zero.QueryIDCC(&ccUser, u.ID)
+	logx.Info(ccUser)
 
 	ct = cf.Zero.Delete(&u)
 	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt, "R": (*records)[0]})

@@ -1,6 +1,9 @@
 package hr
 
-import "gf-example/web-demo/model"
+import (
+	"gf-example/web-demo/model"
+	"github.com/qinchende/gofast/store/orm"
+)
 
 type Title struct {
 	model.CommonFields
@@ -9,6 +12,13 @@ type Title struct {
 	Desc  string `pms:"desc" valid:"omitempty"`
 }
 
-func (*Title) TableName() string {
-	return "sys_title"
+func (*Title) GfAttrs() *orm.ModelAttrs {
+	return &orm.ModelAttrs{
+		TableName: "sys_title",
+		CacheAll:  true,
+	}
 }
+
+//func (*Title) TableName() string {
+//	return "sys_title"
+//}
