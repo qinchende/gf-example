@@ -8,5 +8,5 @@ import (
 var GormZero *gorm.DB
 
 func initGorm() {
-	GormZero = gormc.NewGormConn(&AppCnf.SqlGoZeroCnf)
+	GormZero = gormc.NewGormConn(&AppCnf.MysqlGoZeroCnf)
 }

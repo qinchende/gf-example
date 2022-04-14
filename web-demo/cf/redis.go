@@ -2,14 +2,14 @@ package cf
 
 import (
 	"fmt"
-	"github.com/qinchende/gofast/connx/redis"
+	"github.com/qinchende/gofast/connx/gfrds"
 	"github.com/qinchende/gofast/jwtx"
 )
 
-var RedisA *redis.GoRedisX
+var RedisA *gfrds.GfRedis
 
 func initGoRedis() {
-	RedisA = redis.NewGoRedis(&AppCnf.SdxSessCnf.RedisConnCnf)
+	RedisA = gfrds.NewGoRedis(&AppCnf.SdxSessCnf.RedisConnCnf)
 }
 
 func tryGoRedis() {
@@ -25,7 +25,7 @@ func tryGoRedis() {
 // init sdx session with redis store
 func initRedisSession() {
 	sdxSess := jwtx.SdxSession{
-		SdxSessConfig: AppCnf.SdxSessCnf,
+		SdxSessCnf: AppCnf.SdxSessCnf,
 	}
 	sdxSess.Init()
 }
