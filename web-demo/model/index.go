@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"github.com/qinchende/gofast/store/orm"
 	"time"
 )
 
@@ -16,6 +17,10 @@ type CommonFields struct {
 	Status    int8      `valid:"min=-3"`
 	CreatedAt time.Time `dbc:"created_field"`
 	UpdatedAt time.Time `dbc:"updated_field"`
+}
+
+func (cf *CommonFields) GfAttrs() *orm.ModelAttrs {
+	return &orm.ModelAttrs{}
 }
 
 func (cf *CommonFields) TableName() string {

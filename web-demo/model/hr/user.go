@@ -2,6 +2,7 @@ package hr
 
 import (
 	"gf-example/web-demo/model"
+	"github.com/qinchende/gofast/store/orm"
 	"time"
 )
 
@@ -14,9 +15,11 @@ type SysUser struct {
 	Email    string `pms:"email" valid:"omitempty,email"`      // 可以为空，否则需要匹配email类型
 }
 
-//func (*SysUser) TableName() string {
-//	return "`sys_user`"
-//}
+func (*SysUser) GfAttrs() *orm.ModelAttrs {
+	return &orm.ModelAttrs{
+		CacheAll: true,
+	}
+}
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // 适合 Gorm的model定义
