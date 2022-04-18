@@ -18,6 +18,7 @@ type SysUser struct {
 func (*SysUser) GfAttrs() *orm.ModelAttrs {
 	return &orm.ModelAttrs{
 		CacheAll: true,
+		ExpireS:  3600 * 12, // 每条记录缓存12个小时
 	}
 }
 

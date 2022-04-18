@@ -25,6 +25,7 @@ func routesList(app *fst.GoFast) {
 
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Post("/reg_by_email", user.RegByEmail)
+	gpGhost.Post("/query_user", user.QueryUser)
 	gpGhost.Get("/user_list", hr.UserList)
 
 	//// GET
