@@ -121,7 +121,7 @@ func RegByMobile(ctx *fst.Context) {
 	return
 }
 
-// curl -H "Content-Type: application/json" -X POST --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_email
+// curl -H "Content-Type: application/json" -X GET --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_email?ids=abc\&ids=123
 func RegByEmail(ctx *fst.Context) {
 	sVCode := ctx.Sess.Get("v_code")
 	pVCode := ctx.Pms["v_code"]
@@ -136,24 +136,25 @@ func RegByEmail(ctx *fst.Context) {
 		return
 	}
 	logx.Info(u)
+	ctx.SucKV(fst.KV{"record": u})
 
-	// 第一种事务
-	zero := cf.Zero.TransBegin()
-	defer zero.TransEnd()
-	zero.Insert(&u)
-	myUsers := make([]*hr.SysUser, 0)
-	ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
-	logx.Info(ct)
+	//// 第一种事务
+	//zero := cf.Zero.TransBegin()
+	//defer zero.TransEnd()
+	//zero.Insert(&u)
+	//myUsers := make([]*hr.SysUser, 0)
+	//ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
+	//logx.Info(ct)
+	//
+	//// 第二种事务
+	//myUsers = make([]*hr.SysUser, 0)
+	//cf.Zero.TransFunc(func(zero *sqlx.MysqlORM) {
+	//	zero.Insert(&u)
+	//	logx.Info(u)
+	//	ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
+	//	logx.Info(ct)
+	//})
 
-	// 第二种事务
-	myUsers = make([]*hr.SysUser, 0)
-	cf.Zero.TransFunc(func(zero *sqlx.MysqlORM) {
-		zero.Insert(&u)
-		logx.Info(u)
-		ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
-		logx.Info(ct)
-	})
-
-	ctx.SucKV(fst.KV{"record": *myUsers[0]})
+	//ctx.SucKV(fst.KV{"record": *myUsers[0]})
 	return
 }
