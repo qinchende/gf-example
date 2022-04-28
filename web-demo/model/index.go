@@ -14,7 +14,7 @@ import (
 // GoFast框架的ORM定义，所有Model必须公用的方法
 type CommonFields struct {
 	ID        uint32    `dbc:"primary_field"`
-	Status    int8      `opt:"def=0" valid:"min=-3"`
+	Status    int8      `opt:"def=3" valid:"min=-3"`
 	CreatedAt time.Time `dbc:"created_field"`
 	UpdatedAt time.Time `dbc:"updated_field"`
 }
