@@ -75,13 +75,19 @@ func RegByMobile(ctx *fst.Context) {
 
 	myUsers := make([]*hr.SysUser, 0)
 	ct = cf.Zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
-	logx.Info(myUsers[0])
+	if len(myUsers) > 0 {
+		logx.Info(myUsers[0])
+	}
 
 	myUsers2 := new([]*hr.SysUser)
 	ct = cf.Zero.QueryRows(myUsers2, "age=? and status=?", 38, 0)
-	logx.Info((*myUsers2)[0])
+	if len(*myUsers2) > 0 {
+		logx.Info((*myUsers2)[0])
+	}
 	ct = cf.Zero.QueryRows2(myUsers2, "age,name", "age=78 and status=0 limit 5")
-	logx.Info((*myUsers2)[0])
+	if len(*myUsers2) > 0 {
+		logx.Info((*myUsers2)[0])
+	}
 
 	records := new([]fst.KV)
 	ct = cf.Zero.QueryPet(records, &sqlx.SelectPet{
@@ -91,7 +97,7 @@ func RegByMobile(ctx *fst.Context) {
 		Offset:  1,
 		Limit:   9,
 		Where:   "age=? and status=0",
-		Prams:   []interface{}{78},
+		Prams:   []any{78},
 	})
 	if ct > 0 {
 		logx.Info((*records)[0])
@@ -117,7 +123,7 @@ func RegByMobile(ctx *fst.Context) {
 	//logx.Info(ccUser)
 
 	ct = cf.Zero.Delete(&u)
-	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt, "R": (*records)[0]})
+	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
 }
 
@@ -136,25 +142,29 @@ func RegByEmail(ctx *fst.Context) {
 		return
 	}
 	logx.Info(u)
-	ctx.SucKV(fst.KV{"record": u})
+	//ctx.SucKV(fst.KV{"record": u})
 
-	//// 第一种事务
-	//zero := cf.Zero.TransBegin()
-	//defer zero.TransEnd()
-	//zero.Insert(&u)
+	// 第一种事务
+	zero := cf.Zero.TransBegin()
+	defer zero.TransEnd()
+	zero.Insert(&u)
+	myUsers := make([]*hr.SysUser, 0)
+	ct := zero.QueryRows(&myUsers, "age=? and status=?", 38, 3)
+	logx.Info(ct)
+
+	// 第二种事务
 	//myUsers := make([]*hr.SysUser, 0)
-	//ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
-	//logx.Info(ct)
-	//
-	//// 第二种事务
-	//myUsers = make([]*hr.SysUser, 0)
 	//cf.Zero.TransFunc(func(zero *sqlx.MysqlORM) {
 	//	zero.Insert(&u)
 	//	logx.Info(u)
-	//	ct := zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
+	//	ct := zero.QueryRows(&myUsers, "age=? and status=?", 38, 3)
 	//	logx.Info(ct)
 	//})
 
-	//ctx.SucKV(fst.KV{"record": *myUsers[0]})
+	if len(myUsers) > 0 {
+		ctx.SucKV(fst.KV{"record": *myUsers[0]})
+	} else {
+		ctx.FaiKV(fst.KV{"record": "{}"})
+	}
 	return
 }
