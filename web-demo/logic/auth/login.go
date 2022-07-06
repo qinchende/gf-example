@@ -11,8 +11,8 @@ func BeforeLogin(ctx *fst.Context) {
 }
 
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc","account":"rmb","age":37,"tok":"t:QnBQTHNDT3RIS2V2aFJyUk1o.rEnZy6QeaS/fDtG3Kj/eBBwKDRbfJs8/nAqIxtmzdM"}' http://127.0.0.1:8078/login?account=admin\&pass=abc
-// curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/login?account=admin\&pass=abc123
-// curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/login?account=admin\&pass=abc123
+// curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/login?account=admin\&pass=abc
+// curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/login?account=admin\&pass=abc
 func LoginByAccPass(ctx *fst.Context) {
 	// 模拟验证登录，写入 user_id
 	account, _ := ctx.GetPms("account")
