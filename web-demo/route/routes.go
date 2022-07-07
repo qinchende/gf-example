@@ -16,23 +16,20 @@ func routesList(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
-	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{Timeout: 12000})
 
 	// Get,Post支持单独定义配置参数
-	get, post := gpGhost.GetPost("/mobile_code", sms.SendPhoneCode)
-	get.Config(&mid.RConfig{Timeout: 1000, MaxLen: 10000})
-	post.Config(&mid.RConfig{Timeout: 321000})
+	get, post := gpGhost.GetPost("/mobile_code", sms.SendPhoneCode) // GET + POST 都支持
+	get.Config(&mid.RConfig{Timeout: 1000, MaxLen: 10240})          // 超时1秒，最大10K
+	post.Config(&mid.RConfig{Timeout: 600000})                      // 超时10分钟
 
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
 	gpGhost.Post("/reg_by_email", user.RegByEmail)
-	gpGhost.Post("/query_user", user.QueryUser)
-	gpGhost.Get("/user_list", hr.UserList)
 
-	//// GET
-	//gpGhost.Get("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-	//// POST
-	//gpGhost.Post("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+	gpGhost.Post("/user_update", user.UpdateBase) // 更新
+	gpGhost.Post("/query_users", user.QueryUser)  // 查询
+
+	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{Timeout: 12000}) // 超时12秒
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
@@ -61,4 +58,10 @@ func routesList(app *fst.GoFast) {
 	crmGroup.Before(crm.BeforeA)
 	//crmGroup.Get("/add_user", crm.AddCustomer)
 	//crmGroup.Get("/add_depart", crm.AddGroup)
+
+	//// GET
+	//gpGhost.Get("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+	//// POST
+	//gpGhost.Post("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+
 }

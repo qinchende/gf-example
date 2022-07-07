@@ -6,11 +6,12 @@ import (
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fstx"
 	"github.com/qinchende/gofast/jwtx"
+	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/skill/conf"
 )
 
 type AppConfigEntity struct {
-	WebServerCnf   fst.AppConfig   `cnf:",NA"`
+	WebServerCnf   fst.GfConfig    `cnf:",NA"`
 	SdxSessCnf     jwtx.SdxSessCnf `cnf:",NA"`
 	MysqlGoZeroCnf gform.ConnCnf   `cnf:",NA"`
 }
@@ -22,6 +23,7 @@ func InitEnvConfig() {
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
 	fstx.InitLogger(&AppCnf.WebServerCnf.LogConfig)
+	logx.Info("Hello " + AppCnf.WebServerCnf.Name + ", Welcome.")
 
 	// initGoRedis()
 	// tryGoRedis()

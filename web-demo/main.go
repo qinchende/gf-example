@@ -18,7 +18,6 @@ func main() {
 	// TODO: 1. 初始化配置，连接数据库，创建Server
 	cf.InitEnvConfig()
 	app := fst.CreateServer(&cf.AppCnf.WebServerCnf)
-	logx.Info(app.Name + " server created.")
 
 	// TODO：2. 加载中间件、路由
 	route.LoadRoutes(app)
