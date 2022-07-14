@@ -11,9 +11,9 @@ import (
 )
 
 type AppConfigEntity struct {
-	WebServerCnf   fst.GfConfig    `valid:"omitempty"`
-	SdxSessCnf     jwtx.SdxSessCnf `valid:"omitempty"`
-	MysqlGoZeroCnf gform.ConnCnf   `valid:"omitempty"`
+	WebServerCnf   fst.GfConfig    `v:"required"`
+	SdxSessCnf     jwtx.SdxSessCnf `v:"required"`
+	MysqlGoZeroCnf gform.ConnCnf   `v:"required"`
 }
 
 var AppCnf AppConfigEntity
