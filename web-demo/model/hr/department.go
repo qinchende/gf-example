@@ -7,8 +7,8 @@ import (
 
 type Department struct {
 	model.CommonFields
-	ParentID int16  `pms:"parent_id" valid:"required,min=0"`
-	Name     string `pms:"name" valid:"required"`
+	ParentID int16  `pms:"parent_id" v:"required,range=[0:]"`
+	Name     string `pms:"name" v:"required"`
 }
 
 func (*Department) GfAttrs() *orm.ModelAttrs {
