@@ -8,8 +8,8 @@ import (
 type Title struct {
 	model.CommonFields
 	Level int16
-	Name  string `pms:"name" valid:"required"`
-	Desc  string `pms:"desc" valid:"omitempty"`
+	Name  string `pms:"name" v:"required"`
+	Desc  string `pms:"desc" v:""`
 }
 
 func (*Title) GfAttrs() *orm.ModelAttrs {
