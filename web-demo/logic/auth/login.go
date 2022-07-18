@@ -1,8 +1,8 @@
 package auth
 
 import (
+	"github.com/qinchende/gofast/def/jwtx"
 	"github.com/qinchende/gofast/fst"
-	"github.com/qinchende/gofast/jwtx"
 	"github.com/qinchende/gofast/logx"
 )
 

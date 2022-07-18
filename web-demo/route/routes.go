@@ -7,12 +7,12 @@ import (
 	"gf-example/web-demo/logic/hr"
 	"gf-example/web-demo/logic/sms"
 	"gf-example/web-demo/logic/user"
+	"github.com/qinchende/gofast/def/jwtx"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fst/mid"
-	"github.com/qinchende/gofast/jwtx"
 )
 
-func routesList(app *fst.GoFast) {
+func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
