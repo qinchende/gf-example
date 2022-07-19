@@ -1,9 +1,9 @@
 package auth
 
 import (
-	"github.com/qinchende/gofast/def/jwtx"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
+	"github.com/qinchende/gofast/sdx/jwtx"
 )
 
 func BeforeLogin(ctx *fst.Context) {

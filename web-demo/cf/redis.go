@@ -1,7 +1,7 @@
 package cf
 
 import (
-	"github.com/qinchende/gofast/def/jwtx"
+	"github.com/qinchende/gofast/sdx/jwtx"
 )
 
 //var RedisA *gfrds.GfRedis
