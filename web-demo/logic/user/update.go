@@ -7,34 +7,36 @@ import (
 )
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_name":"闪电","user_id":"11"}' http://127.0.0.1:8078/user_update
-func UpdateBase(ctx *fst.Context) {
-	userId := ctx.Pms["user_id"]
-	newName := ctx.Pms["user_name"]
+func UpdateBase(c *fst.Context) {
+	userId := c.MustGet("user_id").(string)
+	newName := c.MustGet("user_name").(string)
 
 	ccUser := hr.SysUser{}
 	cf.Zero.QueryIDCC(&ccUser, userId)
 
-	ccUser.Name = newName.(string)
+	ccUser.Name = newName
 	cf.Zero.UpdateColumns(&ccUser, "name")
 
 	//logx.Info(ct)
 	//logx.Info(ccUser)
 
-	ctx.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
+	c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	return
 }
 
-// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
-func QueryUser(ctx *fst.Context) {
+// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"13"}' http://127.0.0.1:8078/query_users
+func QueryUser(c *fst.Context) {
+	userId := c.MustGet("user_id").(string)
+
 	ccUser := hr.SysUser{}
-	ct := cf.Zero.QueryIDCC(&ccUser, 13)
+	ct := cf.Zero.QueryIDCC(&ccUser, userId)
 	//logx.Info(ct)
 	//logx.Info(ccUser)
 
 	if ct > 0 {
-		ctx.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
+		c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	} else {
-		ctx.FaiMsg("can't find the record")
+		c.FaiMsg("can't find the record")
 	}
 	return
 }

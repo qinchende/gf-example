@@ -6,19 +6,19 @@ import (
 	"github.com/qinchende/gofast/logx"
 )
 
-func BeforeBindDemo(ctx *fst.Context) {
+func BeforeBindDemo(c *fst.Context) {
 	logx.Info("ghost.auth.BeforeBindDemo")
 }
 
-func AfterBindDemo(ctx *fst.Context) {
+func AfterBindDemo(c *fst.Context) {
 	logx.Info("ghost.auth.AfterBindDemo")
 }
 
-func BeforeBindDemoSend(ctx *fst.Context) {
+func BeforeBindDemoSend(c *fst.Context) {
 	logx.Info("ghost.auth.BeforeBindDemoSend")
 }
 
-func AfterBindDemoSend(ctx *fst.Context) {
+func AfterBindDemoSend(c *fst.Context) {
 	logx.Info("ghost.auth.AfterBindDemoSend")
 }
 
@@ -26,29 +26,29 @@ func AfterBindDemoSend(ctx *fst.Context) {
 // curl -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
-func BindDemo(ctx *fst.Context) {
+func BindDemo(c *fst.Context) {
 	user := hr.SysUser{}
-	if err := ctx.BindPms(&user); err != nil {
-		ctx.FaiErr(err)
+	if err := c.BindPms(&user); err != nil {
+		c.FaiErr(err)
 		return
 	}
-	logx.Infof("%v %+v %#v\n", user, user, user)
+	logx.InfoF("%v %+v %#v\n", user, user, user)
 
 	var title hr.Title
-	if err := ctx.BindPms(&title); err != nil {
-		ctx.FaiErr(err)
+	if err := c.BindPms(&title); err != nil {
+		c.FaiErr(err)
 		return
 	}
 
-	ids := ctx.QueryMap("ids")
-	first := ctx.DefaultQuery("first", "Guest")
-	last := ctx.Query("last") // shortcut for ctx.Request.URL.Query().Get("lastname")
+	ids := c.QueryMap("ids")
+	first := c.DefaultQuery("first", "Guest")
+	last := c.Query("last") // shortcut for c.Request.URL.Query().Get("lastname")
 
-	acc := ctx.PostForm("account")
-	name := ctx.DefaultPostForm("name", "anonymous")
-	age := ctx.PostFormMap("age")
+	acc := c.PostForm("account")
+	name := c.DefaultPostForm("name", "anonymous")
+	age := c.PostFormMap("age")
 
-	ctx.SucKV(fst.KV{
+	c.SucKV(fst.KV{
 		"uname":      user.Name,
 		"nickname":   user.Nickname,
 		"account":    user.Account,
