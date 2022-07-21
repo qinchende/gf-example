@@ -21,7 +21,6 @@ func UpdateBase(c *fst.Context) {
 	//logx.Info(ccUser)
 
 	c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
-	return
 }
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"13"}' http://127.0.0.1:8078/query_users
@@ -30,13 +29,10 @@ func QueryUser(c *fst.Context) {
 
 	ccUser := hr.SysUser{}
 	ct := cf.Zero.QueryIDCC(&ccUser, userId)
-	//logx.Info(ct)
-	//logx.Info(ccUser)
 
 	if ct > 0 {
 		c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	} else {
 		c.FaiMsg("can't find the record")
 	}
-	return
 }

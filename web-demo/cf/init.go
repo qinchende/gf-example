@@ -5,7 +5,6 @@ import (
 	"github.com/qinchende/gofast/connx/gform"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
-	"github.com/qinchende/gofast/sdx"
 	"github.com/qinchende/gofast/sdx/jwtx"
 	"github.com/qinchende/gofast/skill/conf"
 )
@@ -22,7 +21,7 @@ var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
 func InitEnvConfig() {
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
-	sdx.InitLogger(&AppCnf.WebServerCnf.LogConfig)
+	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
 	logx.Info("Hello " + AppCnf.WebServerCnf.Name + ", Welcome.")
 
 	// initGoRedis()
