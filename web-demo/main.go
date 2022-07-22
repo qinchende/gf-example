@@ -23,7 +23,7 @@ func main() {
 	route.LoadRoutes(app)
 
 	// TODO: 3. 启动Server Listen, 等待请求
-	logx.Infof("Listening and serving HTTP on %s", app.Addr)
+	logx.InfoF("Listening and serving HTTP on %s", app.Addr)
 	if lisErr := app.Listen(); lisErr != nil {
 		logx.Error(lisErr)
 	}

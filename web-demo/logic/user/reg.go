@@ -9,18 +9,18 @@ import (
 )
 
 // curl -H "Content-Type: application/json" -X POST --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_mobile
-func RegByMobile(ctx *fst.Context) {
+func RegByMobile(c *fst.Context) {
 	// 通过自己判断字段合法性
-	sVCode := ctx.Sess.Get("v_code")
-	pVCode := ctx.Pms["v_code"]
+	sVCode := c.Sess.Get("v_code")
+	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		ctx.FaiMsg("invalid mobile valid code")
+		c.FaiMsg("invalid mobile valid code")
 		return
 	}
 
 	u := hr.SysUser{}
-	if err := ctx.BindPms(&u); err != nil {
-		ctx.FaiMsg(err.Error())
+	if err := c.BindPms(&u); err != nil {
+		c.FaiMsg(err.Error())
 		return
 	}
 	logx.Info(u)
@@ -34,7 +34,7 @@ func RegByMobile(ctx *fst.Context) {
 	// 方式二：Gorm 三方包保存
 	//ret := cf.GormZero.Create(&u)
 	//if ret.Error != nil {
-	//	ctx.FaiMsg("Created err: " + ret.Error.Error())
+	//	c.FaiMsg("Created err: " + ret.Error.Error())
 	//	return
 	//}
 	//u.Age = 49
@@ -48,13 +48,13 @@ func RegByMobile(ctx *fst.Context) {
 	//cf.GormZero.Find(gormUsers2, "age=91")
 	//logx.Info(gormUsers2)
 
-	//ctx.SucKV(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
+	//c.SucKV(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
 	//return
 
 	// 方式三：GoFast自带ORM功能
 	ct := cf.Zero.Insert(&u)
 	if ct > 0 {
-		logx.Infof("Insert success, new id: %d", u.ID)
+		logx.InfoF("Insert success, new id: %d", u.ID)
 	}
 
 	u.Name = "chende"
@@ -123,26 +123,26 @@ func RegByMobile(ctx *fst.Context) {
 	//logx.Info(ccUser)
 
 	ct = cf.Zero.Delete(&u)
-	ctx.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
+	c.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
 }
 
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_email?ids=abc\&ids=123
-func RegByEmail(ctx *fst.Context) {
-	sVCode := ctx.Sess.Get("v_code")
-	pVCode := ctx.Pms["v_code"]
+func RegByEmail(c *fst.Context) {
+	sVCode := c.Sess.Get("v_code")
+	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		ctx.FaiMsg("invalid mobile valid code")
+		c.FaiMsg("invalid mobile valid code")
 		return
 	}
 
 	u := hr.SysUser{}
-	if err := ctx.BindPms(&u); err != nil {
-		ctx.FaiMsg(err.Error())
+	if err := c.BindPms(&u); err != nil {
+		c.FaiMsg(err.Error())
 		return
 	}
 	logx.Info(u)
-	//ctx.SucKV(fst.KV{"record": u})
+	//c.SucKV(fst.KV{"record": u})
 
 	// 第一种事务
 	zero := cf.Zero.TransBegin()
@@ -162,9 +162,9 @@ func RegByEmail(ctx *fst.Context) {
 	//})
 
 	if len(myUsers) > 0 {
-		ctx.SucKV(fst.KV{"record": *myUsers[0]})
+		c.SucKV(fst.KV{"record": *myUsers[0]})
 	} else {
-		ctx.FaiKV(fst.KV{"record": "{}"})
+		c.FaiKV(fst.KV{"record": "{}"})
 	}
 	return
 }

@@ -1,7 +1,6 @@
 package route
 
 import (
-	"gf-example/web-demo/route/filter"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/sdx"
@@ -30,8 +29,8 @@ func LoadRoutes(app *fst.GoFast) {
 	// 2.1. 全局中间件（拦截器）
 	// Note: 请求进来，并没有定位到具体的路由。就需要走这些过滤器
 	// 所有的请求都要走这里指定的拦截器，发生错误就直接中断返回
-	app.UseGlobal(sdx.DefGlobalFits)   // 默认的一组中间件
-	app.UseGlobalFit(filter.MyFitDemo) // 自定义顶层中间件
+	app.UseGlobal(sdx.DefGlobalFits) // 默认的一组中间件
+	//app.UseGlobalFit(filter.MyFitDemo) // 自定义顶层中间件
 	// 2.2. 全局，第二级中间件
 	app.UseGlobal(sdx.DefGlobalHandlers)
 
