@@ -23,7 +23,13 @@ func UpdateBase(c *fst.Context) {
 	c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 }
 
-// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"13"}' http://127.0.0.1:8078/query_users
+func BeforeQueryUser(c *fst.Context) {
+	//c.FaiMsg("error: before QueryUser")
+	//c.AbortFaiMsg("error: before abort")
+}
+
+// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
+// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"12"}' http://127.0.0.1:8078/query_users
 func QueryUser(c *fst.Context) {
 	userId := c.MustGet("user_id").(string)
 
@@ -35,4 +41,8 @@ func QueryUser(c *fst.Context) {
 	} else {
 		c.FaiMsg("can't find the record")
 	}
+}
+
+func AfterQueryUser(c *fst.Context) {
+	c.FaiMsg("error: after QueryUser")
 }
