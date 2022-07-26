@@ -15,8 +15,8 @@ func BeforeLogin(ctx *fst.Context) {
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/login?account=admin\&pass=abc
 func LoginByAccPass(ctx *fst.Context) {
 	// 模拟验证登录，写入 user_id
-	account, _ := ctx.GetPms("account")
-	pass, _ := ctx.GetPms("pass")
+	account := ctx.GetString("account")
+	pass := ctx.GetString("pass")
 
 	if account == "admin" && pass == "abc" {
 		ctx.DestroySession()

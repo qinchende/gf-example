@@ -26,8 +26,8 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
 	gpGhost.Post("/reg_by_email", user.RegByEmail)
 
-	gpGhost.Post("/user_update", user.UpdateBase) // 更新
-	gpGhost.Post("/query_users", user.QueryUser)  // 查询
+	gpGhost.Post("/user_update", user.UpdateBase)                                                        // 更新
+	gpGhost.Post("/query_users", user.QueryUser).Before(user.BeforeQueryUser).After(user.AfterQueryUser) // 查询
 
 	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{Timeout: 12000}) // 超时12秒
 
