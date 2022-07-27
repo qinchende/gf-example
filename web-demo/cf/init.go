@@ -5,14 +5,14 @@ import (
 	"github.com/qinchende/gofast/connx/gform"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
-	"github.com/qinchende/gofast/sdx/jwtx"
+	"github.com/qinchende/gofast/sdx"
 	"github.com/qinchende/gofast/skill/conf"
 )
 
 type AppConfigEntity struct {
-	WebServerCnf   fst.GfConfig    `v:"required"`
-	SdxSessCnf     jwtx.SdxSessCnf `v:"required"`
-	MysqlGoZeroCnf gform.ConnCnf   `v:"required"`
+	WebServerCnf   fst.GfConfig     `v:"required"`
+	RedisSessCnf   sdx.RedisSessCnf `v:"required"`
+	MysqlGoZeroCnf gform.ConnCnf    `v:"required"`
 }
 
 var AppCnf AppConfigEntity

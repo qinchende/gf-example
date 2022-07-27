@@ -9,7 +9,7 @@ import (
 	"gf-example/web-demo/logic/user"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fst/mid"
-	"github.com/qinchende/gofast/sdx/jwtx"
+	"github.com/qinchende/gofast/sdx"
 )
 
 func apiRoutes(app *fst.GoFast) {
@@ -34,7 +34,7 @@ func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
 	gpAuth := app.Group("/")
-	gpAuth.Before(jwtx.SdxMustLogin) // 检查当前请求是否已经登录
+	gpAuth.Before(sdx.SdxMustLogin) // 检查当前请求是否已经登录
 
 	// logout
 	gpAuth.Get("/logout", auth.Logout)
