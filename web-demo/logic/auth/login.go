@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
-	"github.com/qinchende/gofast/sdx/jwtx"
+	"github.com/qinchende/gofast/sdx"
 )
 
 func BeforeLogin(ctx *fst.Context) {
@@ -21,10 +21,10 @@ func LoginByAccPass(ctx *fst.Context) {
 	if account == "admin" && pass == "abc" {
 		ctx.DestroySession()
 		ctx.NewSession()
-		ctx.Sess.Set(jwtx.SdxSS.AuthField, 111)
+		ctx.Sess.Set(sdx.MySS.AuthField, 111)
 		ctx.Sess.Save()
 		ctx.SucKV(fst.KV{})
 		return
 	}
-	ctx.FaiMsg("account and password error.")
+	ctx.FaiStr("account and password error.")
 }

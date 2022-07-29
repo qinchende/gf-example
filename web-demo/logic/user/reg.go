@@ -14,13 +14,13 @@ func RegByMobile(c *fst.Context) {
 	sVCode := c.Sess.Get("v_code")
 	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		c.FaiMsg("invalid mobile valid code")
+		c.FaiStr("invalid mobile valid code")
 		return
 	}
 
 	u := hr.SysUser{}
 	if err := c.BindPms(&u); err != nil {
-		c.FaiMsg(err.Error())
+		c.FaiErr(err)
 		return
 	}
 	logx.Info(u)
@@ -132,13 +132,13 @@ func RegByEmail(c *fst.Context) {
 	sVCode := c.Sess.Get("v_code")
 	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		c.FaiMsg("invalid mobile valid code")
+		c.FaiStr("invalid mobile valid code")
 		return
 	}
 
 	u := hr.SysUser{}
 	if err := c.BindPms(&u); err != nil {
-		c.FaiMsg(err.Error())
+		c.FaiErr(err)
 		return
 	}
 	logx.Info(u)

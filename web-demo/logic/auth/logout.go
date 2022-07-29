@@ -8,5 +8,5 @@ import (
 func Logout(ctx *fst.Context) {
 	ctx.DestroySession()
 	ctx.NewSession()
-	ctx.SucMsg("logout success. ")
+	ctx.SucStr("logout success. ")
 }

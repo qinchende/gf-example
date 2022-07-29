@@ -1,7 +1,7 @@
 package cf
 
 import (
-	"github.com/qinchende/gofast/sdx/jwtx"
+	"github.com/qinchende/gofast/sdx"
 )
 
 //var RedisA *gfrds.GfRedis
@@ -23,8 +23,8 @@ import (
 
 // init sdx session with redis store
 func initRedisSession() {
-	sdxSess := jwtx.SdxSession{
-		SdxSessCnf: AppCnf.SdxSessCnf,
+	sdxSess := sdx.Session{
+		RedisSessCnf: AppCnf.RedisSessCnf,
 	}
 	sdxSess.Init()
 }
