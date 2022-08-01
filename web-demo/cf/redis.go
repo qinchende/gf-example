@@ -22,9 +22,8 @@ import (
 //}
 
 // init sdx session with redis store
-func initRedisSession() {
-	sdxSess := sdx.Session{
+func initRedisForSession() {
+	sdx.SetupSession(&sdx.SessionDB{
 		RedisSessCnf: AppCnf.RedisSessCnf,
-	}
-	sdxSess.Init()
+	})
 }

@@ -24,6 +24,6 @@ func MustAppConfig() {
 	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
 	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
 
-	initRedisSession()
+	initRedisForSession()
 	initMysql()
 }
