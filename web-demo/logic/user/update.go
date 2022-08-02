@@ -24,8 +24,8 @@ func UpdateBase(c *fst.Context) {
 }
 
 func BeforeQueryUser(c *fst.Context) {
-	c.FaiStr("error: before QueryUser")
-	c.AbortFaiStr("error: before abort")
+	//c.FaiStr("error: before QueryUser")
+	//c.AbortFaiStr("error: before abort")
 }
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
@@ -44,5 +44,5 @@ func QueryUser(c *fst.Context) {
 }
 
 func AfterQueryUser(c *fst.Context) {
-	c.FaiStr("error: after QueryUser")
+	//c.FaiStr("error: after QueryUser")
 }
