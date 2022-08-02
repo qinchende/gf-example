@@ -34,7 +34,7 @@ func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
 	gpAuth := app.Group("/")
-	gpAuth.Before(sdx.SdxMustLogin) // 检查当前请求是否已经登录
+	gpAuth.Before(sdx.MustLogin) // 检查当前请求是否已经登录
 
 	// logout
 	gpAuth.Get("/logout", auth.Logout)
