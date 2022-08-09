@@ -21,7 +21,7 @@ func LoginByAccPass(c *fst.Context) {
 	if account == "admin" && pass == "abc" {
 		sdx.DestroySession(c)
 		sdx.NewSession(c)
-		c.Sess.Set(sdx.MySessDB.GuidField, 111)
+		c.Sess.Set(sdx.MySess.GuidField, 111)
 		c.Sess.Save()
 		c.SucKV(fst.KV{})
 		return
