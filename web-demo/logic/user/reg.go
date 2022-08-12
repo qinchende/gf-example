@@ -23,7 +23,7 @@ func RegByMobile(c *fst.Context) {
 		c.FaiErr(err)
 		return
 	}
-	logx.Info(u)
+	logx.Infos(u)
 
 	//// 方式一：拼接sql语句。
 	//// 注册，清理必要的数据，返回成功
@@ -68,25 +68,25 @@ func RegByMobile(c *fst.Context) {
 
 	newUser := hr.SysUser{}
 	ct = cf.Zero.QueryID(&newUser, u.ID)
-	logx.Info(newUser)
+	logx.Infos(newUser)
 
 	ct = cf.Zero.QueryRow(&newUser, "id=?", u.ID)
-	logx.Info(newUser)
+	logx.Infos(newUser)
 
 	myUsers := make([]*hr.SysUser, 0)
 	ct = cf.Zero.QueryRows(&myUsers, "age=? and status=?", 91, 1)
 	if len(myUsers) > 0 {
-		logx.Info(myUsers[0])
+		logx.Infos(myUsers[0])
 	}
 
 	myUsers2 := new([]*hr.SysUser)
 	ct = cf.Zero.QueryRows(myUsers2, "age=? and status=?", 38, 0)
 	if len(*myUsers2) > 0 {
-		logx.Info((*myUsers2)[0])
+		logx.Infos((*myUsers2)[0])
 	}
 	ct = cf.Zero.QueryRows2(myUsers2, "age,name", "age=78 and status=0 limit 5")
 	if len(*myUsers2) > 0 {
-		logx.Info((*myUsers2)[0])
+		logx.Infos((*myUsers2)[0])
 	}
 
 	records := new([]fst.KV)
@@ -100,7 +100,7 @@ func RegByMobile(c *fst.Context) {
 		Prams:   []any{78},
 	})
 	if ct > 0 {
-		logx.Info((*records)[0])
+		logx.Infos((*records)[0])
 	}
 
 	//cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
@@ -141,7 +141,7 @@ func RegByEmail(c *fst.Context) {
 		c.FaiErr(err)
 		return
 	}
-	logx.Info(u)
+	logx.Infos(u)
 	//c.SucKV(fst.KV{"record": u})
 
 	// 第一种事务
@@ -150,7 +150,7 @@ func RegByEmail(c *fst.Context) {
 	zero.Insert(&u)
 	myUsers := make([]*hr.SysUser, 0)
 	ct := zero.QueryRows(&myUsers, "age=? and status=?", 38, 3)
-	logx.Info(ct)
+	logx.Infos(ct)
 
 	// 第二种事务
 	//myUsers := make([]*hr.SysUser, 0)
