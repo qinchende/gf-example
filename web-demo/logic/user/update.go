@@ -36,6 +36,8 @@ func QueryUser(c *fst.Context) {
 	ccUser := hr.SysUser{}
 	ct := cf.Zero.QueryIDCC(&ccUser, userId)
 
+	c.AddMsgBasket("The info will show in log ext section.")
+
 	if ct > 0 {
 		c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	} else {
