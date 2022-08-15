@@ -8,8 +8,8 @@ import (
 	"gf-example/web-demo/logic/sms"
 	"gf-example/web-demo/logic/user"
 	"github.com/qinchende/gofast/fst"
-	"github.com/qinchende/gofast/fst/mid"
 	"github.com/qinchende/gofast/sdx"
+	"github.com/qinchende/gofast/sdx/mid"
 )
 
 func apiRoutes(app *fst.GoFast) {
