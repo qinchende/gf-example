@@ -9,7 +9,7 @@ import (
 
 func MyFitDemo(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logx.InfoSkipLine("Middleware fit.my-demo.")
+		logx.Info("Middleware fit.my-demo.")
 		next(w, r)
 	}
 }
