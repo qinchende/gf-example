@@ -13,11 +13,11 @@ type SysUser struct {
 	Email    string `pms:"email" v:"match=email"`          // 可以为空，否则需要匹配email类型
 }
 
-//func (u *SysUser) GfAttrs(orm.OrmStruct) *orm.ModelAttrs {
-//	mAttr := u.CommonFields.GfAttrs(u)
-//	mAttr.TableName = "sys_user"
-//	return mAttr
-//}
+func (u *SysUser) GfAttrs(parent orm.OrmStruct) *orm.ModelAttrs {
+	mAttr := u.CommonFields.GfAttrs(u)
+	mAttr.TableName = "sys_user"
+	return mAttr
+}
 
 //// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //// 适合 Gorm的model定义
