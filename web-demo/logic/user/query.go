@@ -17,7 +17,7 @@ func QueryUser(c *fst.Context) {
 	userId := c.MustGet("user_id").(string)
 
 	ccUser := hr.SysUser{}
-	ct := cf.Zero.QueryIDCC(&ccUser, userId)
+	ct := cf.Zero.QueryIDCache(&ccUser, userId)
 
 	c.AddMsgBasket("The info will show in log ext section.")
 

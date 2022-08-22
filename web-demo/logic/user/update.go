@@ -12,7 +12,7 @@ func UpdateBase(c *fst.Context) {
 	newName := c.MustGet("user_name").(string)
 
 	ccUser := hr.SysUser{}
-	cf.Zero.QueryIDCC(&ccUser, userId)
+	cf.Zero.QueryIDCache(&ccUser, userId)
 
 	ccUser.Name = newName
 	cf.Zero.UpdateColumns(&ccUser, "name")
