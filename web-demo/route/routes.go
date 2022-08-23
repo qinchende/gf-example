@@ -28,36 +28,17 @@ func apiRoutes(app *fst.GoFast) {
 
 	gpGhost.Get("/login", auth.LoginByAccPass).Before(auth.BeforeLogin).Config(&mid.RConfig{Timeout: 12000}) // 超时12秒
 
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// 4.2 登录组。不同功能模块，分组对待
-	gpAuth := app.Group("/")
-	gpAuth.Before(sdx.MustLogin)       // 检查当前请求是否已经登录
-	gpAuth.Get("/logout", auth.Logout) // logout
+	// GET
+	gpGhost.Get("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+	// POST
+	gpGhost.Post("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// 4.2 登录组。不同功能模块，分组对待
+	gpAuth := app.Group("/").Before(sdx.SessMustLogin) // 检查当前请求是否已经登录
+	gpAuth.Get("/logout", auth.Logout)                 // logout
+
 	// 4.3 Admin组 (也是需要先登录)
 	adm := gpAuth.Group("/admin").Before(admin.BeforeA) // admin 组
 	adm.GetPost("/set", admin.SetParams)                // GET 和 POST 同时支持
-	//admA := adm.Group("/a")                             // admin 组 下面又分 a 组
-	//admB := adm.Group("/b")                             // admin 组 下面又分 b 组
-	//admA.Get("/set", admin.SetParams)
-	//admB.Get("/set", admin.SetParams)
-
-	// HR
-	//hrGroup := gpAuth.Group("/hr")
-	//hrGroup.Before(hr.BeforeA)
-	//hrGroup.Get("/add_user", hr.AddUser)
-	//hrGroup.Get("/add_depart", hr.AddDepartment)
-
-	// CRM
-	//crmGroup := gpAuth.Group("/crm")
-	//crmGroup.Before(crm.BeforeA)
-	//crmGroup.Get("/add_user", crm.AddCustomer)
-	//crmGroup.Get("/add_depart", crm.AddGroup)
-
-	//// GET
-	//gpGhost.Get("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-	//// POST
-	//gpGhost.Post("/bind_demo", user.BindDemo).Before(user.BeforeBindDemo).After(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-
 }

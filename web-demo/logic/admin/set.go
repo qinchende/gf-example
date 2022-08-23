@@ -2,17 +2,15 @@ package admin
 
 import (
 	"github.com/qinchende/gofast/fst"
-	"github.com/qinchende/gofast/logx"
 )
 
-func BeforeA(ctx *fst.Context) {
-	logx.Info("Handler crm.BeforeA")
+func BeforeA(c *fst.Context) {
+	c.AddMsgBasket("Handler admin.BeforeA")
 }
 
-// curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/admin/set
-// curl -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/admin/set
-func SetParams(ctx *fst.Context) {
-	logx.Info("Handler admin.SetParams")
-
-	ctx.SucKV(fst.KV{"set params": "suc"})
+// curl -i -H "Content-Type: application/json" -X GET --data '{"name":"bmc","account":"rmb","age":37,"tok":"t:WUFZT3lKZFp5cmtlVkdQRnA2.UANo7oIqAyAw0P4Bwdzs2gcQumjgij2luC2jZrSLPOE"}' http://127.0.0.1:8078/admin/set
+// curl -i -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/admin/set
+func SetParams(c *fst.Context) {
+	c.AddMsgBasket("Handler admin.SetParams")
+	c.SucKV(fst.KV{"admin.SetParams": "suc"})
 }
