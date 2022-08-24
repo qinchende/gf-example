@@ -4,6 +4,7 @@ import (
 	"gf-example/web-demo/logic/admin"
 	"gf-example/web-demo/logic/auth"
 	"gf-example/web-demo/logic/user"
+	_ "gf-example/web-demo/model"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/sdx"
 	"github.com/qinchende/gofast/sdx/mid"
