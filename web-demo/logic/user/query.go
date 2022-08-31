@@ -11,7 +11,7 @@ import (
 )
 
 func BeforeQueryUser(c *fst.Context) {
-	return
+	//return
 	// c.FaiStr("error: before QueryUser")
 	// c.AbortFaiStr("error: before abort")
 
@@ -37,7 +37,7 @@ func BeforeQueryUser(c *fst.Context) {
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"12"}' http://127.0.0.1:8078/query_users
 func QueryUser(c *fst.Context) {
-	userId := c.MustGet("user_id").(string)
+	userId := c.GetStringMust("user_id")
 
 	ccUser := hr.SysUser{}
 	ct := cf.Zero.QueryIDCache(&ccUser, userId)
@@ -52,7 +52,7 @@ func QueryUser(c *fst.Context) {
 }
 
 func AfterQueryUser(c *fst.Context) {
-	return
+	//return
 	// c.FaiStr("error: after QueryUser")
 
 	// 这里测试一下 sqlx 的非预处理方案

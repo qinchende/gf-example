@@ -97,7 +97,7 @@ func RegByMobile(c *fst.Context) {
 		Offset:  1,
 		Limit:   9,
 		Where:   "age=? and status=0",
-		Prams:   []any{78},
+		Args:    []any{78},
 	})
 	if ct > 0 {
 		logx.Infos((*records)[0])

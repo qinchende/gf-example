@@ -26,8 +26,8 @@ func BeforeLogin(c *fst.Context) {
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X GET --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/login?account=admin\&pass=abc
 func LoginByAccPass(c *fst.Context) {
 	// 模拟验证登录，写入 user_id
-	account := c.GetString("account")
-	pass := c.GetString("pass")
+	account := c.GetStringMust("account")
+	pass := c.GetStringMust("pass")
 
 	if account == "admin" && pass == "abc" {
 		sdx.SessDestroy(c)
