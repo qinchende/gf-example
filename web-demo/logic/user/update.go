@@ -8,8 +8,8 @@ import (
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_name":"陈德12","user_id":"12"}' http://127.0.0.1:8078/user_update
 func UpdateBase(c *fst.Context) {
-	userId := c.MustGet("user_id").(string)
-	newName := c.MustGet("user_name").(string)
+	userId := c.GetInt64Must("user_id")
+	newName := c.GetStringMust("user_name")
 
 	ccUser := hr.SysUser{}
 	cf.Zero.QueryIDCache(&ccUser, userId)
