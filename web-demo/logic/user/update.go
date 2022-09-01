@@ -8,17 +8,16 @@ import (
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_name":"陈德12","user_id":"12"}' http://127.0.0.1:8078/user_update
 func UpdateBase(c *fst.Context) {
-	userId := c.GetInt64Must("user_id")
+	userId := c.GetIntMust("user_id")
+	u := hr.SysUser{}
+	ct := cf.Zero.QueryIDCache(&u, userId)
+	c.FaiPanicIf(ct <= 0, "找不到用户记录")
+
 	newName := c.GetStringMust("user_name")
-
-	ccUser := hr.SysUser{}
-	cf.Zero.QueryIDCache(&ccUser, userId)
-
-	ccUser.Name = newName
-	cf.Zero.UpdateColumns(&ccUser, "name")
-
-	//logx.Info(ct)
-	//logx.Info(ccUser)
-
-	c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
+	u.Name = newName
+	if ct = cf.Zero.UpdateFields(&u, "Name", "Status"); ct <= 0 {
+		c.FaiStr("更新失败")
+	} else {
+		c.SucKV(fst.KV{"id": u.ID, "name": u.Name})
+	}
 }

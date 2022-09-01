@@ -11,7 +11,7 @@ import (
 )
 
 func BeforeQueryUser(c *fst.Context) {
-	//return
+	return
 	// c.FaiStr("error: before QueryUser")
 	// c.AbortFaiStr("error: before abort")
 
@@ -37,11 +37,10 @@ func BeforeQueryUser(c *fst.Context) {
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"12"}' http://127.0.0.1:8078/query_users
 func QueryUser(c *fst.Context) {
-	userId := c.GetStringMust("user_id")
+	userId := c.GetIntMust("user_id")
 
 	ccUser := hr.SysUser{}
 	ct := cf.Zero.QueryIDCache(&ccUser, userId)
-
 	c.AddMsgBasket("The info will show in log ext section.")
 
 	if ct > 0 {
@@ -52,7 +51,7 @@ func QueryUser(c *fst.Context) {
 }
 
 func AfterQueryUser(c *fst.Context) {
-	//return
+	return
 	// c.FaiStr("error: after QueryUser")
 
 	// 这里测试一下 sqlx 的非预处理方案
@@ -73,4 +72,32 @@ func AfterQueryUser(c *fst.Context) {
 	}
 	dur := timex.Since(startTime)
 	logx.InfoF("[SQL No Prepare][%dms]", dur/time.Millisecond)
+}
+
+// curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc"}' http://127.0.0.1:8078/query_users
+func QueryUsers(c *fst.Context) {
+	myUsers := make([]*hr.SysUser, 0)
+	//ct := cf.Zero.QueryPet(&myUsers, &sqlx.SelectPet{
+	//	//Sql: "select * from sys_user where age=? and status=0",
+	//	//Table:   "sys_user",
+	//	Columns: "id,name,age,status",
+	//	Offset:  1,
+	//	Limit:   9,
+	//	Where:   "age=? and status=?",
+	//	Args:    []any{38, 3},
+	//})
+	//logx.Infos(ct)
+
+	curCt, totalCt := cf.Zero.QueryPetPaging(&myUsers, &sqlx.SelectPet{
+		//Sql: "select * from sys_user where age=? and status=0",
+		//Table:   "sys_user",
+		Columns:  "id,name,age,status",
+		Where:    "age=? and status=?",
+		Args:     []any{38, 3},
+		Page:     1,
+		PageSize: 10,
+	})
+	logx.Infos(curCt, " -> ", totalCt)
+
+	c.SucKV(fst.KV{"records": myUsers})
 }
