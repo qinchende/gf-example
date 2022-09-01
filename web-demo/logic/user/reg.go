@@ -63,8 +63,8 @@ func RegByMobile(c *fst.Context) {
 	u.Name = "wang"
 	u.Age = 78
 	u.Status = 1
-	ct = cf.Zero.UpdateColumns(&u, "name", "status")
-	ct = cf.Zero.UpdateColumns(&u, "age,status")
+	ct = cf.Zero.UpdateFields(&u, "Name", "Status")
+	ct = cf.Zero.UpdateFields(&u, "Age,Status")
 
 	newUser := hr.SysUser{}
 	ct = cf.Zero.QueryID(&newUser, u.ID)
@@ -161,10 +161,6 @@ func RegByEmail(c *fst.Context) {
 	//	logx.Info(ct)
 	//})
 
-	if len(myUsers) > 0 {
-		c.SucKV(fst.KV{"record": *myUsers[0]})
-	} else {
-		c.FaiKV(fst.KV{"record": "{}"})
-	}
-	return
+	c.FaiPanicIf(ct <= 0, "无记录")
+	c.SucKV(fst.KV{"record": *myUsers[0]})
 }
