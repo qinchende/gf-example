@@ -77,27 +77,59 @@ func AfterQueryUser(c *fst.Context) {
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc"}' http://127.0.0.1:8078/query_users
 func QueryUsers(c *fst.Context) {
 	myUsers := make([]*hr.SysUser, 0)
-	//ct := cf.Zero.QueryPet(&myUsers, &sqlx.SelectPet{
-	//	//Sql: "select * from sys_user where age=? and status=0",
-	//	//Table:   "sys_user",
-	//	Columns: "id,name,age,status",
-	//	Offset:  1,
-	//	Limit:   9,
-	//	Where:   "age=? and status=?",
-	//	Args:    []any{38, 3},
-	//})
-	//logx.Infos(ct)
-
-	curCt, totalCt := cf.Zero.QueryPetPaging(&myUsers, &sqlx.SelectPet{
+	ct := cf.Zero.QueryPet(&sqlx.SelectPet{
+		Target: &myUsers,
 		//Sql: "select * from sys_user where age=? and status=0",
 		//Table:   "sys_user",
+		Columns: "*",
+		Where:   "age=? and status=? and id=?",
+		Args:    []any{38, 3, 11},
+		Limit:   500,
+	})
+	logx.Infos(ct)
+
+	ct2 := cf.Zero.QueryPet(&sqlx.SelectPet{
+		Target: &myUsers,
+		Sql:    "select id,name,age,status from sys_user where age=? and status=? and id=?",
+		Args:   []any{38, 3, 11},
+	})
+	logx.Infos(ct2)
+
+	curCt, totalCt := cf.Zero.QueryPetPaging(&sqlx.SelectPet{
+		Target:   &myUsers,
 		Columns:  "id,name,age,status",
-		Where:    "age=? and status=?",
-		Args:     []any{38, 3},
+		Where:    "age=?",
+		Args:     []any{38},
 		Page:     1,
 		PageSize: 10,
+		OrderBy:  "id desc",
+		GroupBy:  "id",
+		PetCache: &sqlx.PetCache{
+			ExpireS:   3600,
+			CacheType: sqlx.CacheRedis,
+		},
 	})
-	logx.Infos(curCt, " -> ", totalCt)
+	logx.Infos(curCt, ",", totalCt)
+
+	c.SucKV(fst.KV{"records": myUsers})
+}
+
+// curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc"}' http://127.0.0.1:8078/query_users_cache
+func QueryUsersCache(c *fst.Context) {
+	myUsers := make([]*hr.SysUser, 0)
+	// 自动缓存结果集
+	myPet := &sqlx.SelectPet{
+		Target: &myUsers,
+		Sql:    "select * from sys_user where age=? and status=?",
+		Args:   []any{38, 3},
+		PetCache: &sqlx.PetCache{
+			ExpireS:   3600,
+			CacheType: sqlx.CacheRedis,
+		},
+	}
+	ct3 := cf.Zero.QueryPet(myPet)
+	//_ = cf.Zero.DeletePetCache(myPet)
+	logx.Infos(ct3)
 
 	c.SucKV(fst.KV{"records": myUsers})
 }

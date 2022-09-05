@@ -90,7 +90,8 @@ func RegByMobile(c *fst.Context) {
 	}
 
 	records := new([]fst.KV)
-	ct = cf.Zero.QueryPet(records, &sqlx.SelectPet{
+	ct = cf.Zero.QueryPet(&sqlx.SelectPet{
+		Target: records,
 		//Sql: "select * from sys_user where age=? and status=0",
 		Table:   "sys_user",
 		Columns: "id,name,age,status",
