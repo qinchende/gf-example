@@ -11,7 +11,7 @@ func init() {
 }
 
 var modelAttrsList = map[string]*orm.ModelAttrs{
-	"hr.SysUser":              {CacheAll: true, ExpireS: 300}, // 缓存5分钟
+	"hr.SysUser":              {CacheAll: true, ExpireS: 3600 * 1},
 	"hr.Title":                {CacheAll: true, ExpireS: 3600 * 1},
 	"hr.SysDepartment":        {CacheAll: true, ExpireS: 3600 * 1, TableName: "sys_department"},
 	full(&hr.SysDepartment{}): {CacheAll: true, ExpireS: 3600 * 1, TableName: "sys_department"},
