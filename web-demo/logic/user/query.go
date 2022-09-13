@@ -35,7 +35,7 @@ func BeforeQueryUser(c *fst.Context) {
 }
 
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
-// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"12"}' http://127.0.0.1:8078/query_users
+// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"11"}' http://127.0.0.1:8078/query_users
 func QueryUser(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 
@@ -77,23 +77,23 @@ func AfterQueryUser(c *fst.Context) {
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc"}' http://127.0.0.1:8078/query_users
 func QueryUsers(c *fst.Context) {
 	myUsers := make([]*hr.SysUser, 0)
-	//ct := cf.Zero.QueryPet(&sqlx.SelectPet{
-	//	Target: &myUsers,
-	//	//Sql: "select * from sys_user where age=? and status=0",
-	//	//Table:   "sys_user",
-	//	Columns: "*",
-	//	Where:   "age=? and status=? and id=?",
-	//	Args:    []any{38, 3, 11},
-	//	Limit:   500,
-	//})
-	//logx.Infos(ct)
-	//
-	//ct2 := cf.Zero.QueryPet(&sqlx.SelectPet{
-	//	Target: &myUsers,
-	//	Sql:    "select id,name,age,status from sys_user where age=? and status=? and id=?",
-	//	Args:   []any{38, 3, 11},
-	//})
-	//logx.Infos(ct2)
+	ct := cf.Zero.QueryPet(&sqlx.SelectPet{
+		Target: &myUsers,
+		//Sql: "select * from sys_user where age=? and status=0",
+		//Table:   "sys_user",
+		Columns: "*",
+		Where:   "age=? and status=? and id=?",
+		Args:    []any{38, 3, 11},
+		Limit:   500,
+	})
+	logx.Infos(ct)
+
+	ct2 := cf.Zero.QueryPet(&sqlx.SelectPet{
+		Target: &myUsers,
+		Sql:    "select id,name,age,status from sys_user where age=? and status=? and id=?",
+		Args:   []any{38, 3, 11},
+	})
+	logx.Infos(ct2)
 
 	myPet := &sqlx.SelectPet{
 		Target:   &myUsers,
