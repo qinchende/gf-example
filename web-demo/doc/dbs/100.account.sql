@@ -12,3 +12,18 @@ CREATE TABLE `sys_user`
     `updated_at` datetime    NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `sys_user_gm_info`
+(
+    `id`         int(11) NOT NULL AUTO_INCREMENT,
+    `user_id`    int(11) NOT NULL,
+    `is_open`    int(11) NOT NULL default 0,
+    `open_time`  datetime NULL,
+    `status`     int(11) NOT NULL default 0,
+    `created_at` datetime    NOT NULL,
+    `updated_at` datetime    NOT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+alter table `sys_user_gm_info` add unique index idx_sys_user_gm_info_user_id(user_id);
+
+insert into sys_user_gm_info (user_id,is_open,open_time,status,created_at,updated_at) values(11,0,null,0,now(),now());

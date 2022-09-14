@@ -40,7 +40,7 @@ func QueryUser(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 
 	ccUser := hr.SysUser{}
-	ct := cf.Zero.QueryIDCache(&ccUser, userId)
+	ct := cf.Zero.QueryPrimaryCache(&ccUser, userId)
 	c.AddMsgBasket("The info will show in log ext section.")
 
 	if ct > 0 {
@@ -115,7 +115,8 @@ func QueryUsers(c *fst.Context) {
 
 	c.FaiPanicIf(curCt <= 0, "没有记录")
 	//c.SucKV(myPet.Result.Target.(fst.KV))
-	c.SucKV(fst.KV{"result": myPet.Target})
+	//c.SucKV(fst.KV{"result": myPet.Target})
+	c.Json(200, myPet.Target)
 	//c.SucKV(fst.KV{"result": myPet.Result.Target})
 	//c.SucKV(fst.KV{"records": myUsers})
 }
@@ -134,7 +135,7 @@ func QueryUsersCache(c *fst.Context) {
 			ExpireS:   3600,
 			CacheType: sqlx.CacheRedis,
 		},
-		Result: &sqlx.PetResult{GsonStr: false},
+		Result: &sqlx.PetResult{GsonStr: true},
 	}
 	ct := cf.Zero.QueryPet(myPet)
 	//_ = cf.Zero.DeletePetCache(myPet)
@@ -142,6 +143,6 @@ func QueryUsersCache(c *fst.Context) {
 
 	c.FaiPanicIf(ct <= 0, "没有记录")
 	//c.SucKV(myPet.Result.Target.(fst.KV))
-	c.SucKV(fst.KV{"result": myPet.Target})
-	//c.SucKV(fst.KV{"result": myPet.Result.Target})
+	//c.SucKV(fst.KV{"result": myPet.Target})
+	c.SucKV(fst.KV{"result": myPet.Result.Target})
 }
