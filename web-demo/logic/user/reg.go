@@ -67,7 +67,7 @@ func RegByMobile(c *fst.Context) {
 	ct = cf.Zero.UpdateFields(&u, "Age,Status")
 
 	newUser := hr.SysUser{}
-	ct = cf.Zero.QueryID(&newUser, u.ID)
+	ct = cf.Zero.QueryPrimary(&newUser, u.ID)
 	logx.Infos(newUser)
 
 	ct = cf.Zero.QueryRow(&newUser, "id=?", u.ID)

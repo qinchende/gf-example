@@ -10,7 +10,7 @@ import (
 func UpdateBase(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 	u := hr.SysUser{}
-	ct := cf.Zero.QueryIDCache(&u, userId)
+	ct := cf.Zero.QueryPrimaryCache(&u, userId)
 	c.FaiPanicIf(ct <= 0, "找不到用户记录")
 
 	newName := c.GetStringMust("user_name")
