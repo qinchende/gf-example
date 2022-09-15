@@ -2,6 +2,7 @@ package user
 
 import (
 	"gf-example/web-demo/cf"
+	"gf-example/web-demo/cf/rd"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 )
@@ -20,9 +21,6 @@ func QueryGmInfo(c *fst.Context) {
 	//yn := cf.Zero.Insert(&newGm)
 	//c.FaiPanicIf(yn <= 0, "add error")
 
-	if ct > 0 {
-		c.SucKV(fst.KV{"result": userGm})
-	} else {
-		c.FaiStr("can't find the record")
-	}
+	c.FaiPanicIf(ct <= 0, rd.FaiNotFound)
+	c.SucKV(fst.KV{"result": userGm})
 }

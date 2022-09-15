@@ -34,8 +34,7 @@ func BeforeQueryUser(c *fst.Context) {
 	logx.InfoF("[SQL Prepare][%dms]", dur/time.Millisecond)
 }
 
-// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/query_users
-// curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"11"}' http://127.0.0.1:8078/query_users
+// curl -i -H "Content-Type: application/json" -d '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_id":"11"}' http://127.0.0.1:8078/query_users
 func QueryUser(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 
@@ -117,7 +116,7 @@ func QueryUsers(c *fst.Context) {
 	//c.SucKV(myPet.Result.Target.(fst.KV))
 	//c.SucKV(fst.KV{"result": myPet.Target})
 	c.Json(200, myPet.Target)
-	//c.SucKV(fst.KV{"result": myPet.Result.Target})
+	//c.SucKV(fst.KV{"gson": myPet.Result.Target})
 	//c.SucKV(fst.KV{"records": myUsers})
 }
 

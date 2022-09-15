@@ -2,6 +2,7 @@ package user
 
 import (
 	"gf-example/web-demo/cf"
+	"gf-example/web-demo/cf/rd"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 )
@@ -11,12 +12,13 @@ func UpdateBase(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 	u := hr.SysUser{}
 	ct := cf.Zero.QueryPrimaryCache(&u, userId)
-	c.FaiPanicIf(ct <= 0, "找不到用户记录")
+	c.FaiPanicIf(ct <= 0, rd.FaiNotFound)
 
 	newName := c.GetStringMust("user_name")
 	u.Name = newName
 	if ct = cf.Zero.UpdateFields(&u, "Name", "Status"); ct <= 0 {
-		c.FaiStr("更新失败")
+		c.FaiCode(rd.FaiUserUpdateError)
+		//c.FaiStr("更新失败")
 	} else {
 		c.SucKV(fst.KV{"id": u.ID, "name": u.Name})
 	}

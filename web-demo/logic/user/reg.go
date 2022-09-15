@@ -8,7 +8,7 @@ import (
 	"github.com/qinchende/gofast/store/sqlx"
 )
 
-// curl -H "Content-Type: application/json" -X POST --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_mobile
+// curl -H "Content-Type: application/json" -d '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_mobile
 func RegByMobile(c *fst.Context) {
 	// 通过自己判断字段合法性
 	sVCode := c.Sess.Get("v_code")
@@ -19,10 +19,7 @@ func RegByMobile(c *fst.Context) {
 	}
 
 	u := hr.SysUser{}
-	if err := c.BindPms(&u); err != nil {
-		c.FaiErr(err)
-		return
-	}
+	fst.GFPanicErr(c.Bind(&u))
 	logx.Infos(u)
 
 	//// 方式一：拼接sql语句。
@@ -138,12 +135,8 @@ func RegByEmail(c *fst.Context) {
 	}
 
 	u := hr.SysUser{}
-	if err := c.BindPms(&u); err != nil {
-		c.FaiErr(err)
-		return
-	}
+	fst.GFPanicErr(c.Bind(&u))
 	logx.Infos(u)
-	//c.SucKV(fst.KV{"record": u})
 
 	// 第一种事务
 	zero := cf.Zero.TransBegin()
