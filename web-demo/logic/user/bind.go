@@ -1,6 +1,7 @@
 package user
 
 import (
+	"gf-example/web-demo/cf/rd"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
@@ -22,30 +23,26 @@ func AfterBindDemoSend(c *fst.Context) {
 	logx.Info("ghost.auth.AfterBindDemoSend")
 }
 
-// curl -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":38}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de\&tok=t:THNqNjVFTU5sbkNtd0N3OXRp.6UWKmsqPhnrGAbOk7zeRtsUW0uhptj4gI5/FiiIylAs
-// curl -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
-// curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de
-// curl -H "Content-Type: application/x-www-form-urlencoded" -X POST --data "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
+// curl -H "Content-Type: application/json" -d '{"name":"bmc","account":"rmb","age":38}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de\&tok=t:THNqNjVFTU5sbkNtd0N3OXRp.6UWKmsqPhnrGAbOk7zeRtsUW0uhptj4gI5/FiiIylAs
+// curl -H "Content-Type: application/json" -d '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
+// curl -H "Content-Type: application/x-www-form-urlencoded" -d '{"name":"bmc","account":"rmb"}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de
+// curl -H "Content-Type: application/x-www-form-urlencoded" -d "name=bmc&account=rmb&age=36" http://127.0.0.1:8078/bind_demo?ids[a]=1234\&ids[b]=hello\&first=chen\&last=de
 func BindDemo(c *fst.Context) {
-	user := hr.SysUser{}
-	if err := c.BindPms(&user); err != nil {
-		c.FaiErr(err)
-		return
-	}
-	logx.InfoF("%v %+v %#v\n", user, user, user)
+	user := &hr.SysUser{}
+	fst.GFPanicErr(c.Bind(&user))
 
-	var title hr.Title
-	if err := c.BindPms(&title); err != nil {
-		c.FaiErr(err)
-		return
-	}
+	title := hr.Title{}
+	//fst.GFPanicErr(c.Bind(&title))
+	c.FaiPanicIf(c.Bind(&title) != nil, rd.FaiBindError)
 
+	// query url 中的参数
 	ids := c.QueryMap("ids")
-	first := c.DefaultQuery("first", "Guest")
-	last := c.Query("last") // shortcut for c.Request.URL.Query().Get("lastname")
+	first := c.QueryDef("first", "Guest")
+	last := c.Query("last")
 
+	// post form 提交的参数
 	acc := c.PostForm("account")
-	name := c.DefaultPostForm("name", "anonymous")
+	name := c.PostFormDef("name", "anonymous")
 	age := c.PostFormMap("age")
 
 	c.SucKV(fst.KV{
