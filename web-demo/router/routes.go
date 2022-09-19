@@ -1,4 +1,4 @@
-package route
+package router
 
 import (
 	"gf-example/web-demo/logic/admin"

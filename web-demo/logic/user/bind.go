@@ -1,7 +1,7 @@
 package user
 
 import (
-	"gf-example/web-demo/cf/rd"
+	"gf-example/web-demo/cf/rt"
 	"gf-example/web-demo/model/hr"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
@@ -33,7 +33,7 @@ func BindDemo(c *fst.Context) {
 
 	title := hr.Title{}
 	//fst.GFPanicErr(c.Bind(&title))
-	c.FaiPanicIf(c.Bind(&title) != nil, rd.FaiBindError)
+	c.FaiPanicIf(c.Bind(&title) != nil, rt.FaiBindError)
 
 	// query url 中的参数
 	ids := c.QueryMap("ids")

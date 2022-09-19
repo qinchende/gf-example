@@ -2,7 +2,7 @@ package main
 
 import (
 	"gf-example/web-demo/cf"
-	"gf-example/web-demo/route"
+	"gf-example/web-demo/router"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 )
@@ -13,7 +13,7 @@ func main() {
 	app := fst.CreateServer(&cf.AppCnf.WebServerCnf)
 
 	// Step2. 加载中间件、路由
-	route.LoadRoutes(app)
+	router.LoadRoutes(app)
 
 	// Step3. 启动Server Listen, 等待请求
 	logx.InfoF("Listening and serving HTTP on %s", app.ListenAddr)

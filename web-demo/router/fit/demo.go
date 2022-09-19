@@ -1,4 +1,4 @@
-package filter
+package fit
 
 import (
 	"github.com/qinchende/gofast/logx"
