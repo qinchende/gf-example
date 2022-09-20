@@ -7,6 +7,10 @@ import (
 	"github.com/qinchende/gofast/fst"
 )
 
+func AfterMatchRoute(c *fst.Context) {
+
+}
+
 // curl -H "Content-Type: application/json" -X POST --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s","user_name":"陈德11","user_id":"11"}' http://127.0.0.1:8078/user_update
 func UpdateBase(c *fst.Context) {
 	userId := c.GetIntMust("user_id")

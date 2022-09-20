@@ -11,11 +11,7 @@ const (
 	FaiBindError = 104
 )
 
-const (
-	FaiUserUpdateError = 10001 // 用户信息保存失败
-)
-
 var (
-	//FaiUserAdd    = &fst.Ret{Code: 10001, Msg: "添加失败", Desc: "这就是内部描述"}
+	FaiUserAdd    = &fst.Ret{Code: 10001, Msg: "", Desc: "这就是内部描述说明"}
 	FaiUserUpdate = &fst.Ret{Code: 10002, Msg: "用户信息保存失败", Desc: "这就是内部描述"}
 )
