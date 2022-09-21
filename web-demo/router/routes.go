@@ -24,6 +24,7 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
 	gpGhost.Post("/reg_by_email", user.RegByEmail)
 
+	gpGhost.Post("/user/update/:user_id", user.UpdateBase).AfterMatch(user.AfterMatchRoute)     // 测试路由拦截
 	gpGhost.Post("/user_update", user.UpdateBase)                                               // 更新
 	gpGhost.Post("/query_users", user.QueryUser).B(user.BeforeQueryUser).A(user.AfterQueryUser) // 查询
 	gpGhost.Get("/query_users", user.QueryUsers)
@@ -36,8 +37,6 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 	// POST
 	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-
-	//gpGhost.Post("/user/update/:user_id", user.UpdateBase).AfterMatch(user.AfterMatchRoute)
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
