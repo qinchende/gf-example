@@ -4,6 +4,7 @@ import (
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/sdx"
+	"github.com/qinchende/gofast/sdx/mid"
 	"net/http"
 )
 
@@ -17,13 +18,7 @@ func LoadRoutes(app *fst.GoFast) {
 		logx.Info("App OnClose Call.")
 	})
 
-	// 根路由 特殊情况处理, 不写的话就是默认处理函数
-	app.NoRoute(func(c *fst.Context) {
-		c.AbortDirect(http.StatusNotFound, "Custom NoRoute func -> 404-Can't find the path.")
-	})
-	app.NoMethod(func(c *fst.Context) {
-		c.AbortDirect(http.StatusMethodNotAllowed, "Custom NoMethod func -> 405-Method not allowed.")
-	})
+	specialRoutes(app)
 
 	// 2.1. 全局中间件（拦截器）
 	// Note: 请求进来，并没有定位到具体的路由。就需要走这些过滤器
@@ -40,4 +35,18 @@ func LoadRoutes(app *fst.GoFast) {
 
 	// 4. all routes lists
 	apiRoutes(app)
+}
+
+// 特殊的404,504等路由处理链
+func specialRoutes(app *fst.GoFast) {
+	app.SpecialBefore(mid.Logger)
+	//app.SpecialAfter()
+
+	// 根路由 特殊情况处理, 不写的话就是默认处理函数
+	app.NoRoute(func(c *fst.Context) {
+		c.AbortDirect(http.StatusNotFound, "Custom NoRoute func -> 404-Can't find the path.")
+	})
+	app.NoMethod(func(c *fst.Context) {
+		c.AbortDirect(http.StatusMethodNotAllowed, "Custom NoMethod func -> 405-Method not allowed.")
+	})
 }
