@@ -37,10 +37,9 @@ func LoadRoutes(app *fst.GoFast) {
 	apiRoutes(app)
 }
 
-// 特殊的404,504等路由处理链
+// 正确匹配路由之外的情况，比如特殊的404,504等路由处理链
 func specialRoutes(app *fst.GoFast) {
-	app.SpecialBefore(mid.Logger)
-	//app.SpecialAfter()
+	app.SpecialBefore(mid.LoggerMini)
 
 	// 根路由 特殊情况处理, 不写的话就是默认处理函数
 	app.NoRoute(func(c *fst.Context) {
