@@ -15,6 +15,7 @@ import (
 // 进一步检查匹配到的特定路由，而先不走可能无用的中间件
 func AfterMatchRoute(c *fst.Context) {
 	if c.ReqRaw.Referer() != "https://www.tl50.com/" {
+		//c.AbortDirect(http.StatusHTTPVersionNotSupported, "只支持http/1.x协议")
 		c.SetRouteTo404()
 		return
 	} else if !strings.HasPrefix(c.ReqRaw.RemoteAddr, "10.10") {
