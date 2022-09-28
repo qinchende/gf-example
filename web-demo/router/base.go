@@ -42,10 +42,10 @@ func specialRoutes(app *fst.GoFast) {
 	app.SpecialBefore(mid.LoggerMini)
 
 	// 根路由 特殊情况处理, 不写的话就是默认处理函数
-	app.NoRoute(func(c *fst.Context) {
+	app.Reg404(func(c *fst.Context) {
 		c.AbortDirect(http.StatusNotFound, "Custom NoRoute func -> 404-Can't find the path.")
 	})
-	app.NoMethod(func(c *fst.Context) {
+	app.Reg405(func(c *fst.Context) {
 		c.AbortDirect(http.StatusMethodNotAllowed, "Custom NoMethod func -> 405-Method not allowed.")
 	})
 }

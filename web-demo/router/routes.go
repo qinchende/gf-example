@@ -14,6 +14,7 @@ func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非登录组
 	gpGhost := app.Group("/")
+	//gpGhost.AfterMatch(user.AfterMatchRoute)
 
 	// Get,Post支持单独定义配置参数
 	get, post := gpGhost.GetPost("/mobile_code", auth.SendPhoneCode) // GET + POST 都支持
