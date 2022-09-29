@@ -21,9 +21,8 @@ func apiRoutes(app *fst.GoFast) {
 	get.Attrs(&mid.RAttrs{Timeout: 1000, MaxLen: 10240})             // 超时1秒，最大10K
 	post.Attrs(&mid.RAttrs{Timeout: 600000})                         // 超时10分钟
 
-	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
-	gpGhost.Post("/reg_by_email", user.RegByEmail)
+	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
 
 	gpGhost.Post("/user/update/:user_id", user.UpdateBase).AfterMatch(user.AfterMatchRoute)     // 测试路由拦截
 	gpGhost.Post("/user_update", user.UpdateBase)                                               // 更新
@@ -32,13 +31,13 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/query_users_cache", user.QueryUsersCache)
 	gpGhost.GetPost("/query_user_gm", user.QueryGmInfo)
 
+	gpGhost.Get("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
+
+	gpGhost.Get("/request_url", auth.RequestURL)
+
+	// 登录
 	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.RAttrs{Timeout: 12000}) // 超时12秒
-
-	// GET
-	gpGhost.Get("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-	// POST
-	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).PreSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
-
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
 	gpAuth := app.Group("/").B(sdx.SessMustLogin) // 检查当前请求是否已经登录
