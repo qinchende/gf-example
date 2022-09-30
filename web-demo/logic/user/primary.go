@@ -22,5 +22,5 @@ func QueryGmInfo(c *fst.Context) {
 	//c.FaiPanicIf(yn <= 0, "add error")
 
 	c.FaiPanicIf(ct <= 0, rt.FaiNotFound)
-	c.SucKV(fst.KV{"result": userGm})
+	c.SucData(fst.KV{"result": userGm})
 }

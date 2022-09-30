@@ -12,7 +12,7 @@ import (
 
 func BeforeQueryUser(c *fst.Context) {
 	return
-	// c.FaiStr("error: before QueryUser")
+	// c.FaiMsg("error: before QueryUser")
 	// c.AbortFaiStr("error: before abort")
 
 	// 这里测试一下 sqlx 的预处理连接
@@ -43,15 +43,15 @@ func QueryUser(c *fst.Context) {
 	c.AddMsgBasket("The info will show in log ext section.")
 
 	if ct > 0 {
-		c.SucKV(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
+		c.SucData(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	} else {
-		c.FaiStr("can't find the record")
+		c.FaiMsg("can't find the record")
 	}
 }
 
 func AfterQueryUser(c *fst.Context) {
 	return
-	// c.FaiStr("error: after QueryUser")
+	// c.FaiMsg("error: after QueryUser")
 
 	// 这里测试一下 sqlx 的非预处理方案
 	userTest := hr.SysUser{}
@@ -113,11 +113,11 @@ func QueryUsers(c *fst.Context) {
 	logx.Infos(curCt, ",", totalCt)
 
 	c.FaiPanicIf(curCt <= 0, "没有记录")
-	//c.SucKV(myPet.Result.Target.(fst.KV))
-	//c.SucKV(fst.KV{"result": myPet.Target})
+	//c.SucData(myPet.Result.Target.(fst.KV))
+	//c.SucData(fst.KV{"result": myPet.Target})
 	c.Json(200, myPet.Target)
-	//c.SucKV(fst.KV{"gson": myPet.Result.Target})
-	//c.SucKV(fst.KV{"records": myUsers})
+	//c.SucData(fst.KV{"gson": myPet.Result.Target})
+	//c.SucData(fst.KV{"records": myUsers})
 }
 
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc"}' http://127.0.0.1:8078/query_users_cache
@@ -141,7 +141,7 @@ func QueryUsersCache(c *fst.Context) {
 	//logx.Infos(ct)
 
 	c.FaiPanicIf(ct <= 0, "没有记录")
-	//c.SucKV(myPet.Result.Target.(fst.KV))
-	//c.SucKV(fst.KV{"result": myPet.Target})
-	c.SucKV(fst.KV{"result": myPet.Result.Target})
+	//c.SucData(myPet.Result.Target.(fst.KV))
+	//c.SucData(fst.KV{"result": myPet.Target})
+	c.SucData(fst.KV{"result": myPet.Result.Target})
 }

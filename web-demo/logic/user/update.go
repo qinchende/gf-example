@@ -49,8 +49,8 @@ func UpdateBase(c *fst.Context) {
 	if ct = cf.Zero.UpdateFields(&u, "Name", "Status"); ct <= 0 {
 		c.FaiRet(rt.FaiUserUpdate)
 		//c.FaiCode(rt.FaiUserUpdateError)
-		//c.FaiStr("更新失败")
+		//c.FaiMsg("更新失败")
 	} else {
-		c.SucKV(fst.KV{"id": u.ID, "name": u.Name})
+		c.SucData(fst.KV{"id": u.ID, "name": u.Name})
 	}
 }

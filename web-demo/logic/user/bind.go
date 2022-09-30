@@ -45,7 +45,7 @@ func BindDemo(c *fst.Context) {
 	name := c.PostFormDef("name", "anonymous")
 	age := c.PostFormMap("age")
 
-	c.SucKV(fst.KV{
+	c.SucData(fst.KV{
 		"uname":      user.Name,
 		"nickname":   user.Nickname,
 		"account":    user.Account,
