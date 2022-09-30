@@ -14,7 +14,7 @@ func RegByMobile(c *fst.Context) {
 	sVCode := c.Sess.Get("v_code")
 	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		c.FaiStr("invalid mobile valid code")
+		c.FaiMsg("invalid mobile valid code")
 		return
 	}
 
@@ -45,7 +45,7 @@ func RegByMobile(c *fst.Context) {
 	//cf.GormZero.Find(gormUsers2, "age=91")
 	//logx.Info(gormUsers2)
 
-	//c.SucKV(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
+	//c.SucData(fst.KV{"id": u.ID, "affected": ret.RowsAffected})
 	//return
 
 	// 方式三：GoFast自带ORM功能
@@ -121,7 +121,7 @@ func RegByMobile(c *fst.Context) {
 	//logx.Info(ccUser)
 
 	ct = cf.Zero.Delete(&u)
-	c.SucKV(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
+	c.SucData(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
 }
 
@@ -130,7 +130,7 @@ func RegByEmail(c *fst.Context) {
 	sVCode := c.Sess.Get("v_code")
 	pVCode := c.Pms["v_code"]
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
-		c.FaiStr("invalid mobile valid code")
+		c.FaiMsg("invalid mobile valid code")
 		return
 	}
 
@@ -156,5 +156,5 @@ func RegByEmail(c *fst.Context) {
 	//})
 
 	c.FaiPanicIf(ct <= 0, "无记录")
-	c.SucKV(fst.KV{"record": *myUsers[0]})
+	c.SucData(fst.KV{"record": *myUsers[0]})
 }
