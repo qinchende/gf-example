@@ -16,14 +16,14 @@ type AppConfigEntity struct {
 }
 
 var AppCnf AppConfigEntity
-var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
 
 func MustAppConfig() {
+	var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
 	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
 	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
 
 	initRedisForSession()
-	initMysql()
+	InitMysql()
 }

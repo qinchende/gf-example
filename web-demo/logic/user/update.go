@@ -4,6 +4,7 @@ import (
 	"gf-example/web-demo/cf"
 	"gf-example/web-demo/cf/rt"
 	"gf-example/web-demo/model/hr"
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"net/http"
@@ -51,6 +52,6 @@ func UpdateBase(c *fst.Context) {
 		//c.FaiCode(rt.FaiUserUpdateError)
 		//c.FaiMsg("更新失败")
 	} else {
-		c.SucData(fst.KV{"id": u.ID, "name": u.Name})
+		c.SucData(cst.KV{"id": u.ID, "name": u.Name})
 	}
 }

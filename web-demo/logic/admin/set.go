@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 )
 
@@ -12,5 +13,5 @@ func BeforeA(c *fst.Context) {
 // curl -i -H "Content-Type: application/json" -X POST --data '{"name":"bmc","account":"rmb","age":37}' http://127.0.0.1:8078/admin/set
 func SetParams(c *fst.Context) {
 	c.AddMsgBasket("Handler admin.SetParams")
-	c.SucData(fst.KV{"admin.SetParams": "suc"})
+	c.SucData(cst.KV{"admin.SetParams": "suc"})
 }

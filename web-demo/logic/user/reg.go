@@ -3,6 +3,7 @@ package user
 import (
 	"gf-example/web-demo/cf"
 	"gf-example/web-demo/model/hr"
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/store/sqlx"
@@ -86,7 +87,7 @@ func RegByMobile(c *fst.Context) {
 		logx.Infos((*myUsers2)[0])
 	}
 
-	records := new([]fst.KV)
+	records := new([]cst.KV)
 	ct = cf.Zero.QueryPet(&sqlx.SelectPet{
 		Target: records,
 		//Sql: "select * from sys_user where age=? and status=0",
@@ -121,7 +122,7 @@ func RegByMobile(c *fst.Context) {
 	//logx.Info(ccUser)
 
 	ct = cf.Zero.Delete(&u)
-	c.SucData(fst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
+	c.SucData(cst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
 }
 
@@ -156,5 +157,5 @@ func RegByEmail(c *fst.Context) {
 	//})
 
 	c.FaiPanicIf(ct <= 0, "无记录")
-	c.SucData(fst.KV{"record": *myUsers[0]})
+	c.SucData(cst.KV{"record": *myUsers[0]})
 }

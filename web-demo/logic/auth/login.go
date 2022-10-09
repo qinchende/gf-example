@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/sdx"
@@ -11,7 +12,7 @@ import (
 // curl -i -H "Content-Type: application/x-www-form-urlencoded" -X POST --data "tok=t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s" http://127.0.0.1:8078/mobile_code?len=6
 func SendPhoneCode(c *fst.Context) {
 	// TODO: 1. 生成验证码 2. 调用短信通道发送
-	kvs := fst.KV{"v_code": "123456"}
+	kvs := cst.KV{"v_code": "123456"}
 	c.Sess.SetKV(kvs)
 	time.Sleep(100 * time.Millisecond)
 	c.SucData(kvs)
@@ -34,7 +35,7 @@ func LoginByAccPass(c *fst.Context) {
 		sdx.SessRecreate(c)
 		c.Sess.Set(sdx.MySess.GuidField, 111)
 		_ = c.Sess.Save()
-		c.SucData(fst.KV{})
+		c.SucData(cst.KV{})
 		return
 	}
 	c.FaiMsg("account and password error.")

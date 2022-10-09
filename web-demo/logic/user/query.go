@@ -3,6 +3,7 @@ package user
 import (
 	"gf-example/web-demo/cf"
 	"gf-example/web-demo/model/hr"
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/skill/timex"
@@ -43,7 +44,7 @@ func QueryUser(c *fst.Context) {
 	c.AddMsgBasket("The info will show in log ext section.")
 
 	if ct > 0 {
-		c.SucData(fst.KV{"id": ccUser.ID, "name": ccUser.Name})
+		c.SucData(cst.KV{"id": ccUser.ID, "name": ccUser.Name})
 	} else {
 		c.FaiMsg("can't find the record")
 	}
@@ -143,5 +144,5 @@ func QueryUsersCache(c *fst.Context) {
 	c.FaiPanicIf(ct <= 0, "没有记录")
 	//c.SucData(myPet.Result.Target.(fst.KV))
 	//c.SucData(fst.KV{"result": myPet.Target})
-	c.SucData(fst.KV{"result": myPet.Result.Target})
+	c.SucData(cst.KV{"result": myPet.Result.Target})
 }
