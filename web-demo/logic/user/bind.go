@@ -3,6 +3,7 @@ package user
 import (
 	"gf-example/web-demo/cf/rt"
 	"gf-example/web-demo/model/hr"
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 )
@@ -45,7 +46,7 @@ func BindDemo(c *fst.Context) {
 	name := c.PostFormDef("name", "anonymous")
 	age := c.PostFormMap("age")
 
-	c.SucData(fst.KV{
+	c.SucData(cst.KV{
 		"uname":      user.Name,
 		"nickname":   user.Nickname,
 		"account":    user.Account,

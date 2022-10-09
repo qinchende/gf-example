@@ -7,6 +7,6 @@ import (
 
 var Zero *sqlx.OrmDB
 
-func initMysql() {
+func InitMysql() {
 	Zero = gform.OpenMysql(&AppCnf.MysqlGoZeroCnf)
 }
