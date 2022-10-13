@@ -16,7 +16,7 @@ func main() {
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 func loadConfigDel() {
-	var AppCnf cf.AppConfigEntity
+	var AppCnf cf.ProjectConfig
 	var cnfFile = flag.String("f", "../cf/env.yaml", "-f env.[yaml|yml|json]")
 
 	flag.Parse()

@@ -18,15 +18,11 @@ func LoadRoutes(app *fst.GoFast) {
 		logx.Info("App OnClose Call.")
 	})
 
+	// 2.1. 匹配路由中间件（拦截器）
+	//app.UseHttpHandler(fit.MyFitDemo) // 自定义顶层中间件
+	app.UseGlobal(sdx.DefHandlers) // 框架默认中间件链
+	// 2.2. 特殊路由中间件
 	specialRoutes(app)
-
-	// 2.1. 全局中间件（拦截器）
-	// Note: 请求进来，并没有定位到具体的路由。就需要走这些过滤器
-	// 所有的请求都要走这里指定的拦截器，发生错误就直接中断返回
-	app.UseGlobal(sdx.DefHttpHandlers) // 默认的一组中间件
-	//app.UseGlobalFit(filter.MyFitDemo) // 自定义顶层中间件
-	// 2.2. 全局，第二级中间件
-	app.UseGlobal(sdx.DefContextHandlers)
 
 	// 3. 根路由，中间件。
 	// Note: 匹配到路由之后开始走这里的逻辑，执行过滤器
