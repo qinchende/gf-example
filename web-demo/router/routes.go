@@ -18,8 +18,8 @@ func apiRoutes(app *fst.GoFast) {
 
 	// Get,Post支持单独定义配置参数
 	get, post := gpGhost.GetPost("/mobile_code", auth.SendPhoneCode) // GET + POST 都支持
-	get.Attrs(&mid.RAttrs{Timeout: 1000, MaxLen: 10240})             // 超时1秒，最大10K
-	post.Attrs(&mid.RAttrs{Timeout: 600000})                         // 超时10分钟
+	get.Attrs(&mid.Attrs{TimeoutMS: 1000, MaxLen: 10240})            // 超时1秒，最大10K
+	post.Attrs(&mid.Attrs{TimeoutMS: 600000})                        // 超时10分钟
 
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
@@ -38,7 +38,7 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/request_url", auth.RequestURL)
 
 	// 登录
-	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.RAttrs{Timeout: 12000}) // 超时12秒
+	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.Attrs{TimeoutMS: 12000}) // 超时12秒
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2 登录组。不同功能模块，分组对待
 	gpAuth := app.Group("/").B(sdx.SessMustLogin) // 检查当前请求是否已经登录
