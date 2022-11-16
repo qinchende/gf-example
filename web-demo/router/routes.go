@@ -34,8 +34,8 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 
-	gpGhost.GetPost("/request_test_data", auth.RequestTestData)
-	gpGhost.Get("/request_url", auth.RequestURL)
+	gpGhost.Get("/request_test_data", auth.RequestTestData).Attrs(&mid.Attrs{TimeoutMS: 61})
+	gpGhost.Get("/request_url", auth.RequestURL).Attrs(&mid.Attrs{TimeoutMS: 100})
 
 	// 登录
 	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.Attrs{TimeoutMS: 12000}) // 超时12秒
