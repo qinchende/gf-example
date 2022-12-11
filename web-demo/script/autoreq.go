@@ -29,6 +29,7 @@ func main() {
 		go autoRequest(&goWait)
 	}
 	goWait.Wait()
+	logx.InfoF("Request times: %d, Suc times %d", loopCount, sucCount)
 	logx.Info("All threads finished. Now exit. bye bye...")
 }
 
@@ -42,7 +43,13 @@ func loadConfigDel() {
 
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
-	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
+
+	// reset log config
+	pLogConfig := &AppCnf.WebServerCnf.LogConfig
+	pLogConfig.AppName += "-autoreq"
+	pLogConfig.FileFolder = "../" + pLogConfig.FileFolder
+
+	logx.MustSetup(pLogConfig)
 	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
 	cf.InitMysql()
 
@@ -59,7 +66,12 @@ var (
 func autoRequest(wg *sync.WaitGroup) {
 	defer wg.Done()
 
-	for loopCount < totalRequests {
+	for atomic.LoadInt32(&loopCount) < totalRequests {
+		lpc := atomic.AddInt32(&loopCount, 1)
+		if lpc > totalRequests {
+			break
+		}
+
 		_, err := httpx.DoRequestGetKV(&httpx.RequestPet{
 			ProxyUrl: cf.AppCnf.CurrAppData.ProxyUrl,
 			Method:   http.MethodGet,
@@ -69,16 +81,17 @@ func autoRequest(wg *sync.WaitGroup) {
 		})
 
 		// do request +++++++++++++++++++++++++++++++++++==
-		lpc := atomic.AddInt32(&loopCount, 1)
 		scc := int32(0)
 		if err != nil {
 			reduceLog2.DoInterval(lpc == totalRequests, func(skipTimes int32) {
 				logx.InfoF("Ret error # %s #, Skip log times: %d", err.Error(), skipTimes)
 			})
-			time.Sleep(time.Duration(1000) * time.Millisecond)
+			// 异常，sleep 1000ms
+			time.Sleep(time.Duration(520) * time.Millisecond)
 			scc = atomic.LoadInt32(&sucCount)
 		} else {
-			time.Sleep(time.Duration(200) * time.Millisecond)
+			// 正常，sleep 500ms
+			time.Sleep(time.Duration(160) * time.Millisecond)
 			scc = atomic.AddInt32(&sucCount, 1)
 		}
 

@@ -33,12 +33,12 @@ func RequestTestData(c *fst.Context) {
 	ct := atomic.AddInt32(&count, 1)
 
 	var timeout int32 = 1
-	if ct < 100 {
-		timeout += ct
-	} else if ct < 200 {
-		timeout += (50 + randTool.Int31n(150))
-	} else if ct < 300 {
-		timeout += (300 - ct)
+	if ct < 33 {
+		timeout += ct * 3
+	} else if ct < 400 {
+		timeout += (50 + randTool.Int31n(200))
+	} else if ct < 500 {
+		timeout += (500 - ct)
 	} else {
 		timeout = 10
 	}
