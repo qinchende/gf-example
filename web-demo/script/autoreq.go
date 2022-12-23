@@ -3,10 +3,12 @@ package main
 import (
 	"flag"
 	"gf-example/web-demo/cf"
+	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/skill/conf"
 	"github.com/qinchende/gofast/skill/exec"
 	"github.com/qinchende/gofast/skill/httpx"
+	"math/rand"
 	"net/http"
 	"sync"
 	"sync/atomic"
@@ -31,6 +33,7 @@ func main() {
 	goWait.Wait()
 	logx.InfoF("Request times: %d, Suc times %d", loopCount, sucCount)
 	logx.Info("All threads finished. Now exit. bye bye...")
+	time.Sleep(2 * time.Second) // 确保退出之前打印日志
 }
 
 var reduceLog1 *exec.Reduce
@@ -62,6 +65,8 @@ var (
 	sucCount  int32 = 0
 )
 
+var randTool = rand.New(rand.NewSource(time.Now().UnixNano()))
+
 // Auto Running
 func autoRequest(wg *sync.WaitGroup) {
 	defer wg.Done()
@@ -72,10 +77,27 @@ func autoRequest(wg *sync.WaitGroup) {
 			break
 		}
 
+		// 主动设置请求处理的耗时时间
+		var delayMS int32 = 0
+		if lpc < 33 {
+			delayMS += lpc * 3
+		} else if lpc < 200 {
+			delayMS += (80 + randTool.Int31n(20))
+		} else if lpc < 400 {
+			delayMS += (80 + randTool.Int31n(200))
+		} else if lpc < 600 {
+			delayMS += (50 + randTool.Int31n(100))
+		} else if lpc < 700 {
+			delayMS += (700 - lpc)
+		} else {
+			delayMS = 10
+		}
+
 		_, err := httpx.DoRequestGetKV(&httpx.RequestPet{
-			ProxyUrl: cf.AppCnf.CurrAppData.ProxyUrl,
-			Method:   http.MethodGet,
-			Url:      "http://127.0.0.1:8078/request_test_data",
+			ProxyUrl:  cf.AppCnf.CurrAppData.ProxyUrl,
+			Method:    http.MethodGet,
+			Url:       "http://127.0.0.1:8078/request_test_data",
+			QueryArgs: cst.KV{"Count": lpc, "DelayMS": delayMS},
 			//QueryArgs: cst.KV{"tok": "t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"},
 			//BodyArgs: cst.KV{"tok": "t:NDhDdjdwMEdaWTZoamtnY01o.RALE84mO4YGpAFdPfFEO8gi4NFcvH1kQV9IWmfaJuyc"},
 		})
@@ -86,12 +108,12 @@ func autoRequest(wg *sync.WaitGroup) {
 			reduceLog2.DoInterval(lpc == totalRequests, func(skipTimes int32) {
 				logx.InfoF("Ret error # %s #, Skip log times: %d", err.Error(), skipTimes)
 			})
-			// 异常，sleep 1000ms
-			time.Sleep(time.Duration(520) * time.Millisecond)
+			// 异常
+			time.Sleep(time.Duration(500) * time.Millisecond)
 			scc = atomic.LoadInt32(&sucCount)
 		} else {
-			// 正常，sleep 500ms
-			time.Sleep(time.Duration(160) * time.Millisecond)
+			// 正常
+			time.Sleep(time.Duration(500) * time.Millisecond)
 			scc = atomic.AddInt32(&sucCount, 1)
 		}
 

@@ -4,9 +4,7 @@ import (
 	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/skill/httpx"
-	"math/rand"
 	"net/http"
-	"sync/atomic"
 	"time"
 )
 
@@ -24,24 +22,12 @@ func RequestURL(c *fst.Context) {
 	c.SucData(kv["data"])
 }
 
-var randTool = rand.New(rand.NewSource(time.Now().UnixNano()))
-var count int32 = 0
-
 // curl -H "Content-Type: text/plain" -X GET http://127.0.0.1:8078/request_test_data
 // curl -H "Content-Type: text/plain" -X GET http://127.0.0.1:8078/request_test_data?tok=t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s
 func RequestTestData(c *fst.Context) {
-	ct := atomic.AddInt32(&count, 1)
+	count := c.GetIntDef("Count", 0)
+	delayMS := c.GetIntDef("DelayMS", 1)
+	time.Sleep(time.Duration(delayMS) * time.Millisecond)
 
-	var timeout int32 = 1
-	if ct < 33 {
-		timeout += ct * 3
-	} else if ct < 400 {
-		timeout += (50 + randTool.Int31n(200))
-	} else if ct < 500 {
-		timeout += (500 - ct)
-	} else {
-		timeout = 10
-	}
-	time.Sleep(time.Duration(timeout) * time.Millisecond)
-	c.SucData(cst.KV{"Count": ct, "Timeout": timeout})
+	c.SucData(cst.KV{"Count": count, "DelayMS": delayMS})
 }
