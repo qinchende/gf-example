@@ -23,7 +23,7 @@ import (
 
 // init sdx session with redis store
 func initRedisForSession() {
-	sdx.SetupSession(&sdx.SessionDB{
+	sdx.SetupSession(&sdx.RedisSessionDB{
 		RedisSessCnf: AppCnf.RedisSessCnf,
 	})
 }
