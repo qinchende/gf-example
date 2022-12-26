@@ -15,6 +15,7 @@ import (
 	"time"
 )
 
+// 测试熔断降载的实际表现。
 const (
 	threadNum     = 10   // 请求的线程数，并发
 	totalRequests = 1000 // 总请求数
@@ -51,6 +52,7 @@ func loadConfigDel() {
 	pLogConfig := &AppCnf.WebServerCnf.LogConfig
 	pLogConfig.AppName += "-autoreq"
 	pLogConfig.FileFolder = "../" + pLogConfig.FileFolder
+	pLogConfig.LogMedium = "console"
 
 	logx.MustSetup(pLogConfig)
 	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
