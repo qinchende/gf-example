@@ -3,6 +3,7 @@ package router
 import (
 	"gf-example/web-demo/logic/admin"
 	"gf-example/web-demo/logic/auth"
+	"gf-example/web-demo/logic/nosess"
 	"gf-example/web-demo/logic/user"
 	_ "gf-example/web-demo/model"
 	"github.com/qinchende/gofast/fst"
@@ -12,8 +13,18 @@ import (
 
 func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// 4.1 非登录组
-	gpGhost := app.Group("/")
+	// 4.1 非session组，不理睬token信息
+	gpNoSession := app.Group("/")
+	gpNoSession.Get("/request_url", nosess.RequestURL).Attrs(&mid.Attrs{TimeoutMS: 100})
+	gpNoSession.Get("/request_test_data", nosess.RequestTestData).Attrs(&mid.Attrs{TimeoutMS: 100})
+
+	// 4.2 redis session 组
+	gpSession := app.Group("/")
+	gpSession.Before(sdx.SessBuilder) // “闪电侠Session”：所有请求要携带tok信息，没有就自动分配一个
+
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// 4.2.1 非登录组
+	gpGhost := gpSession.Group("/")
 	//gpGhost.AfterMatch(user.AfterMatchRoute)
 
 	// Get,Post支持单独定义配置参数
@@ -34,17 +45,14 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Get("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 
-	gpGhost.Get("/request_test_data", auth.RequestTestData).Attrs(&mid.Attrs{TimeoutMS: 100})
-	gpGhost.Get("/request_url", auth.RequestURL).Attrs(&mid.Attrs{TimeoutMS: 100})
-
 	// 登录
 	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.Attrs{TimeoutMS: 12000}) // 超时12秒
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// 4.2 登录组。不同功能模块，分组对待
-	gpAuth := app.Group("/").B(sdx.SessMustLogin) // 检查当前请求是否已经登录
-	gpAuth.Get("/logout", auth.Logout)            // logout
+	// 4.2.2 登录组。不同功能模块，分组对待
+	gpAuth := gpSession.Group("/").B(sdx.SessMustLogin) // 检查当前请求是否已经登录
+	gpAuth.Get("/logout", auth.Logout)                  // logout
 
-	// 4.3 Admin组 (也是需要先登录)
+	// 4.2.3 Admin组 (也是需要先登录)
 	adm := gpAuth.Group("/admin").B(admin.BeforeA) // admin 组
 	adm.GetPost("/set", admin.SetParams)           // GET 和 POST 同时支持
 }

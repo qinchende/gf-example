@@ -1,4 +1,4 @@
-package auth
+package nosess
 
 import (
 	"github.com/qinchende/gofast/cst"
