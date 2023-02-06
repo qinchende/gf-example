@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// curl -H "Content-Type: application/json" -X GET --data '{}' http://127.0.0.1:8078/request_url
 // curl -H "Content-Type: application/json" -X GET --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/request_url
 func RequestURL(c *fst.Context) {
 	kv, err := httpx.DoRequestGetKVCtx(c.ReqRaw.Context(), &httpx.RequestPet{

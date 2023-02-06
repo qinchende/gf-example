@@ -1,0 +1,8 @@
+.git
+.github
+.idea
+*.test
+*.prof
+nohup.out
+go.mod
+go.sum
