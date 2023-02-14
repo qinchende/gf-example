@@ -17,7 +17,5 @@ func main() {
 
 	// Step3. 启动Server Listen, 等待请求
 	logx.InfoF("Listening and serving HTTP on %s", app.ListenAddr)
-	if lisErr := app.Listen(); lisErr != nil {
-		logx.ErrorFatal(lisErr)
-	}
+	app.Listen()
 }
