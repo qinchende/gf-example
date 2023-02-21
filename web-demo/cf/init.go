@@ -10,24 +10,26 @@ import (
 )
 
 type ProjectConfig struct {
-	CurrAppData    appData          `v:"required"`
 	WebServerCnf   fst.GfConfig     `v:"required"`
 	RedisSessCnf   sdx.RedisSessCnf `v:"required"`
 	MysqlGoZeroCnf gform.ConnCnf    `v:"required"`
+	CurrAppParams  appParams        `v:"required"`
 }
 
 var AppCnf ProjectConfig
-var Data *appData
 
 func MustAppConfig() {
 	var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
 
-	Data = &AppCnf.CurrAppData
-	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
-	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
+	logConfig := &AppCnf.WebServerCnf.LogConfig
+	logConfig.AppName = AppCnf.WebServerCnf.AppName
+	logConfig.ServerNo = AppCnf.WebServerCnf.ServerNo
+	logx.MustSetup(logConfig)
+	logx.Info("Hello " + logConfig.AppName + ", config data loaded.")
 
+	initAppParams()
 	initRedisForSession()
 	InitMysql()
 }

@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func init() {
+func InitModelsAttrs() {
 	orm.ShareModelAttrs(modelAttrsList)
 }
 

@@ -31,7 +31,7 @@ func BeforeQueryUser(c *fst.Context) {
 		logx.InfoF("User id: %#v exist. Name is %s", i, userTest.Name)
 	}
 	myStmt.Close()
-	dur := timex.Since(startTime)
+	dur := timex.NowDiff(startTime)
 	logx.InfoF("[SQL Prepare][%dms]", dur/time.Millisecond)
 }
 
@@ -70,7 +70,7 @@ func AfterQueryUser(c *fst.Context) {
 		}
 		logx.InfoF("User id: %#v exist. Name is %s", i, userTest.Name)
 	}
-	dur := timex.Since(startTime)
+	dur := timex.NowDiff(startTime)
 	logx.InfoF("[SQL No Prepare][%dms]", dur/time.Millisecond)
 }
 
