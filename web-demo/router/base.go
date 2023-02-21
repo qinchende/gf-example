@@ -2,20 +2,10 @@ package router
 
 import (
 	"github.com/qinchende/gofast/fst"
-	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/sdx"
 )
 
 func LoadRoutes(app *fst.GoFast) {
-	// 1. 基础
-	// 应用级事件
-	app.OnReady(func(fast *fst.GoFast) {
-		logx.Info("App OnReady Call.")
-	})
-	app.OnClose(func(fast *fst.GoFast) {
-		logx.Info("App OnClose Call.")
-	})
-
 	// 2. 全局中间件链（拦截器）
 	app.UseGlobal(sdx.SuperHandlers) // 框架自带闪电侠超级中间件链
 

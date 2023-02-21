@@ -96,7 +96,7 @@ func autoRequest(wg *sync.WaitGroup) {
 		}
 
 		_, err := httpx.DoRequestGetKV(&httpx.RequestPet{
-			ProxyUrl:  cf.AppCnf.CurrAppData.ProxyUrl,
+			ProxyUrl:  cf.DParams.ProxyUrl,
 			Method:    http.MethodGet,
 			Url:       "http://127.0.0.1:8078/request_test_data",
 			QueryArgs: cst.KV{"Count": lpc, "DelayMS": delayMS},
