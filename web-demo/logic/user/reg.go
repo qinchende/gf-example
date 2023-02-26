@@ -102,25 +102,6 @@ func RegByMobile(c *fst.Context) {
 		logx.Infos((*records)[0])
 	}
 
-	//cf.Zero.QueryPetCC(records, &sqlx.SelectPetCC{
-	//	ExpireS:   12 * 3600,
-	//	CacheType: sqlx.CacheMem,
-	//	SelectPet: sqlx.SelectPet{
-	//		Table:   "sys_user",
-	//		Columns: "id,name,age,status",
-	//		Offset:  1,
-	//		Limit:   9,
-	//		Where:   "age=? and status=0",
-	//		Prams:   []interface{}{78},
-	//	},
-	//})
-	//if len(*records) > 0 {
-	//	logx.Info((*records)[0])
-	//}
-	//ccUser := hr.SysUser{}
-	//ct = cf.Zero.QueryIDCC(&ccUser, u.ID)
-	//logx.Info(ccUser)
-
 	ct = cf.Zero.Delete(&u)
 	c.SucData(cst.KV{"id": u.ID, "updated_at": u.UpdatedAt})
 	return
