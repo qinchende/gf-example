@@ -41,7 +41,7 @@ func QueryUser(c *fst.Context) {
 
 	ccUser := hr.SysUser{}
 	ct := cf.Zero.QueryPrimaryCache(&ccUser, userId)
-	c.AddMsgBasket("The info will show in log ext section.")
+	c.CarryAddMsg("The info will show in log ext section.")
 
 	if ct > 0 {
 		c.SucData(cst.KV{"id": ccUser.ID, "name": ccUser.Name})
