@@ -20,7 +20,7 @@ func RegByMobile(c *fst.Context) {
 	}
 
 	u := hr.SysUser{}
-	fst.GFPanicErr(c.Bind(&u))
+	cst.PanicIfErr(c.Bind(&u))
 	logx.Infos(u)
 
 	//// 方式一：拼接sql语句。
@@ -117,7 +117,7 @@ func RegByEmail(c *fst.Context) {
 	}
 
 	u := hr.SysUser{}
-	fst.GFPanicErr(c.Bind(&u))
+	cst.PanicIfErr(c.Bind(&u))
 	logx.Infos(u)
 
 	// 第一种事务
@@ -137,6 +137,6 @@ func RegByEmail(c *fst.Context) {
 	//	logx.Info(ct)
 	//})
 
-	c.FaiPanicIf(ct <= 0, "无记录")
+	cst.PanicIf(ct <= 0, "无记录")
 	c.SucData(cst.KV{"record": *myUsers[0]})
 }

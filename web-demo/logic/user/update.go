@@ -43,7 +43,7 @@ func UpdateBase(c *fst.Context) {
 	userId := c.GetIntMust("user_id")
 	u := hr.SysUser{}
 	ct := cf.Zero.QueryPrimaryCache(&u, userId)
-	c.FaiPanicIf(ct <= 0, rt.FaiNotFound)
+	cst.PanicIf(ct <= 0, rt.FaiNotFound)
 
 	newName := c.GetStringMust("user_name")
 	u.Name = newName
