@@ -62,7 +62,7 @@ func AfterQueryUser(c *fst.Context) {
 	for i := 11; i <= 12; i++ {
 		sqlRows := cf.Zero.QuerySql(sqlStr, i)
 		ct := sqlx.ScanRow(&userTest, sqlRows)
-		sqlx.ErrLog(sqlRows.Close())
+		sqlx.LogStackIfErr(sqlRows.Close())
 
 		if ct <= 0 {
 			logx.InfoF("User id: %#v can't find.", i)
@@ -113,7 +113,7 @@ func QueryUsers(c *fst.Context) {
 	curCt, totalCt := cf.Zero.QueryPetPaging(myPet)
 	logx.Infos(curCt, ",", totalCt)
 
-	c.FaiPanicIf(curCt <= 0, "没有记录")
+	cst.PanicIf(curCt <= 0, "没有记录")
 	//c.SucData(myPet.Result.Target.(fst.KV))
 	//c.SucData(fst.KV{"result": myPet.Target})
 	c.Json(200, myPet.Target)
@@ -141,7 +141,7 @@ func QueryUsersCache(c *fst.Context) {
 	//_ = cf.Zero.DeletePetCache(myPet)
 	//logx.Infos(ct)
 
-	c.FaiPanicIf(ct <= 0, "没有记录")
+	cst.PanicIf(ct <= 0, "没有记录")
 	//c.SucData(myPet.Result.Target.(fst.KV))
 	//c.SucData(fst.KV{"result": myPet.Target})
 	c.SucData(cst.KV{"result": myPet.Result.Target})
