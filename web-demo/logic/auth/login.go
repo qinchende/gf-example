@@ -33,8 +33,8 @@ func LoginByAccPass(c *fst.Context) {
 	if account == "admin" && pass == "abc" {
 		sdx.SessDestroy(c)
 		sdx.SessRecreate(c)
-		c.Sess.Set(sdx.MySessDB.GuidField, 111)
-		_ = c.Sess.Save()
+		sdx.SessSetUid(c, 111)
+		c.Sess.Save()
 		c.SucData(cst.KV{})
 		return
 	}

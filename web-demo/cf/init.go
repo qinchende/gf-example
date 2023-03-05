@@ -2,7 +2,7 @@ package cf
 
 import (
 	"flag"
-	"github.com/qinchende/gofast/connx/gform"
+	"github.com/qinchende/gofast/connx/orm"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/logx"
 	"github.com/qinchende/gofast/sdx"
@@ -12,7 +12,7 @@ import (
 type ProjectConfig struct {
 	WebServerCnf   fst.GfConfig     `v:"required"`
 	RedisSessCnf   sdx.RedisSessCnf `v:"required"`
-	MysqlGoZeroCnf gform.ConnCnf    `v:"required"`
+	MysqlGoZeroCnf orm.MysqlConnCnf `v:"required"`
 	CurrAppParams  appParams        `v:"required"`
 }
 

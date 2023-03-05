@@ -12,7 +12,7 @@ import (
 )
 
 func BeforeQueryUser(c *fst.Context) {
-	return
+	//return
 	// c.FaiMsg("error: before QueryUser")
 	// c.AbortFaiStr("error: before abort")
 
@@ -51,7 +51,7 @@ func QueryUser(c *fst.Context) {
 }
 
 func AfterQueryUser(c *fst.Context) {
-	return
+	//return
 	// c.FaiMsg("error: after QueryUser")
 
 	// 这里测试一下 sqlx 的非预处理方案
@@ -61,8 +61,8 @@ func AfterQueryUser(c *fst.Context) {
 	startTime := timex.Now()
 	for i := 11; i <= 12; i++ {
 		sqlRows := cf.Zero.QuerySql(sqlStr, i)
+		defer sqlx.CloseSqlRows(sqlRows)
 		ct := sqlx.ScanRow(&userTest, sqlRows)
-		sqlx.LogStackIfErr(sqlRows.Close())
 
 		if ct <= 0 {
 			logx.InfoF("User id: %#v can't find.", i)
