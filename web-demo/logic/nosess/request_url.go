@@ -19,7 +19,7 @@ func RequestURL(c *fst.Context) {
 		//BodyArgs: cst.KV{"tok": "t:NDhDdjdwMEdaWTZoamtnY01o.RALE84mO4YGpAFdPfFEO8gi4NFcvH1kQV9IWmfaJuyc"},
 	})
 	time.Sleep(99 * time.Millisecond)
-	c.FaiPanicIf(err != nil, err)
+	c.PanicIfErr(err, nil)
 	c.SucData(kv["data"])
 }
 
