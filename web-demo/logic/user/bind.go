@@ -36,15 +36,15 @@ func BindDemo(c *fst.Context) {
 	//fst.GFPanicErr(c.Bind(&title))
 	c.PanicIfErr(c.Bind(&title), cf.FaiBindError)
 
-	// query url 中的参数
-	ids := c.QueryMap("ids")
-	first := c.QueryDef("first", "Guest")
-	last := c.Query("last")
-
-	// post form 提交的参数
-	acc := c.PostForm("account")
-	name := c.PostFormDef("name", "anonymous")
-	age := c.PostFormMap("age")
+	//// query url 中的参数
+	//ids := c.QueryMap("ids")
+	//first := c.QueryDef("first", "Guest")
+	//last := c.Query("last")
+	//
+	//// post form 提交的参数
+	//acc := c.PostForm("account")
+	//name := c.PostFormDef("name", "anonymous")
+	//age := c.PostFormMap("age")
 
 	c.SucData(cst.KV{
 		"uname":      user.Name,
@@ -52,11 +52,11 @@ func BindDemo(c *fst.Context) {
 		"account":    user.Account,
 		"age":        user.Age,
 		"title_name": title.Name,
-		"q_ids":      ids,
-		"q_first":    first,
-		"q_last":     last,
-		"f_acc":      acc,
-		"f_name":     name,
-		"f_age":      age,
+		//"q_ids":      ids,
+		//"q_first":    first,
+		//"q_last":     last,
+		//"f_acc":      acc,
+		//"f_name":     name,
+		//"f_age":      age,
 	})
 }
