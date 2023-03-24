@@ -3,7 +3,7 @@ package nosess
 import (
 	"github.com/qinchende/gofast/cst"
 	"github.com/qinchende/gofast/fst"
-	"github.com/qinchende/gofast/skill/httpx"
+	"github.com/qinchende/gofast/fst/httpx"
 	"net/http"
 	"time"
 )
