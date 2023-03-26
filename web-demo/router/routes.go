@@ -15,8 +15,8 @@ func apiRoutes(app *fst.GoFast) {
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.1 非session组，不理睬token信息
 	gpNoSession := app.Group("/")
-	gpNoSession.Get("/request_url", nosess.RequestURL).Attrs(&mid.Attrs{TimeoutMS: 100})
-	gpNoSession.Get("/request_test_data", nosess.RequestTestData).Attrs(&mid.Attrs{TimeoutMS: 100})
+	gpNoSession.Get("/request_url", nosess.RequestURL).Attrs(&mid.RAttrs{TimeoutMS: 100})
+	gpNoSession.Get("/request_test_data", nosess.RequestTestData).Attrs(&mid.RAttrs{TimeoutMS: 100})
 
 	// 4.2 redis session 组
 	gpSession := app.Group("/")
@@ -28,9 +28,9 @@ func apiRoutes(app *fst.GoFast) {
 	//gpGhost.AfterMatch(user.AfterMatchRoute)
 
 	// Get,Post支持单独定义配置参数
-	get, post := gpGhost.GetPost("/mobile_code", auth.SendPhoneCode) // GET + POST 都支持
-	get.Attrs(&mid.Attrs{TimeoutMS: 1000, MaxLen: 10240})            // 超时1秒，最大10K
-	post.Attrs(&mid.Attrs{TimeoutMS: 600000})                        // 超时10分钟
+	nodes := gpGhost.GetPost("/mobile_code", auth.SendPhoneCode) // GET + POST 都支持
+	nodes[0].Attrs(&mid.RAttrs{TimeoutMS: 1000, MaxLen: 10240})  // 超时1秒，最大10K
+	nodes[1].Attrs(&mid.RAttrs{TimeoutMS: 600000})               // 超时10分钟
 
 	gpGhost.Get("/reg_by_email", user.RegByEmail)
 	gpGhost.Post("/reg_by_mobile", user.RegByMobile)
@@ -46,7 +46,7 @@ func apiRoutes(app *fst.GoFast) {
 	gpGhost.Post("/bind_demo", user.BindDemo).B(user.BeforeBindDemo).A(user.AfterBindDemo).BeforeSend(user.BeforeBindDemoSend).AfterSend(user.AfterBindDemoSend)
 
 	// 登录
-	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.Attrs{TimeoutMS: 12000}) // 超时12秒
+	gpGhost.Get("/login", auth.LoginByAccPass).B(auth.BeforeLogin).Attrs(&mid.RAttrs{TimeoutMS: 12000}) // 超时12秒
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 4.2.2 登录组。不同功能模块，分组对待
 	gpAuth := gpSession.Group("/").B(sdx.SessMustLogin) // 检查当前请求是否已经登录
