@@ -20,7 +20,7 @@ func BeforeQueryUser(c *fst.Context) {
 	userTest := hr.SysUser{}
 	sqlStr := "select * from sys_user where id=?;"
 
-	startTime := timex.Now()
+	startTime := timex.NowDur()
 	myStmt := cf.Zero.Prepare(sqlStr, true)
 	for i := 11; i <= 12; i++ {
 		ct := myStmt.QueryRow(&userTest, i)
@@ -31,7 +31,7 @@ func BeforeQueryUser(c *fst.Context) {
 		logx.InfoF("User id: %#v exist. Name is %s", i, userTest.Name)
 	}
 	myStmt.Close()
-	dur := timex.NowDiff(startTime)
+	dur := timex.NowDiffDur(startTime)
 	logx.InfoF("[SQL Prepare][%dms]", dur/time.Millisecond)
 }
 
@@ -58,7 +58,7 @@ func AfterQueryUser(c *fst.Context) {
 	userTest := hr.SysUser{}
 	sqlStr := "select * from sys_user where id=?;"
 
-	startTime := timex.Now()
+	startTime := timex.NowDur()
 	for i := 11; i <= 12; i++ {
 		sqlRows := cf.Zero.QuerySql(sqlStr, i)
 		defer sqlx.CloseSqlRows(sqlRows)
@@ -70,7 +70,7 @@ func AfterQueryUser(c *fst.Context) {
 		}
 		logx.InfoF("User id: %#v exist. Name is %s", i, userTest.Name)
 	}
-	dur := timex.NowDiff(startTime)
+	dur := timex.NowDiffDur(startTime)
 	logx.InfoF("[SQL No Prepare][%dms]", dur/time.Millisecond)
 }
 
@@ -78,7 +78,7 @@ func AfterQueryUser(c *fst.Context) {
 func QueryUsers(c *fst.Context) {
 	myUsers := make([]*hr.SysUser, 0)
 	ct := cf.Zero.QueryPet(&sqlx.SelectPet{
-		Target: &myUsers,
+		List: &myUsers,
 		//Sql: "select * from sys_user where age=? and status=0",
 		//Table:   "sys_user",
 		Columns: "*",
@@ -89,14 +89,14 @@ func QueryUsers(c *fst.Context) {
 	logx.Infos(ct)
 
 	ct2 := cf.Zero.QueryPet(&sqlx.SelectPet{
-		Target: &myUsers,
-		Sql:    "select id,name,age,status from sys_user where age=? and status=? and id=?",
-		Args:   []any{38, 3, 11},
+		List: &myUsers,
+		Sql:  "select id,name,age,status from sys_user where age=? and status=? and id=?",
+		Args: []any{38, 3, 11},
 	})
 	logx.Infos(ct2)
 
 	myPet := &sqlx.SelectPet{
-		Target:   &myUsers,
+		List:     &myUsers,
 		Columns:  "id,name,age,status",
 		Where:    "age<?",
 		Args:     []any{38},
@@ -105,19 +105,19 @@ func QueryUsers(c *fst.Context) {
 		OrderBy:  "id desc",
 		GroupBy:  "id",
 		//Cache: &sqlx.PetCache{
-		//	ExpireS:   3600,
+		//	CacheExpireS:   3600,
 		//	CacheType: sqlx.CacheRedis,
 		//},
-		//Result: &sqlx.PetResult{GsonStr: true},
+		//Result: &sqlx.PetResult{IsGsonStr: true},
 	}
 	curCt, totalCt := cf.Zero.QueryPetPaging(myPet)
 	logx.Infos(curCt, ",", totalCt)
 
 	cst.PanicIf(curCt <= 0, "没有记录")
-	//c.SucData(myPet.Result.Target.(fst.KV))
-	//c.SucData(fst.KV{"result": myPet.Target})
-	c.Json(200, myPet.Target)
-	//c.SucData(fst.KV{"gson": myPet.Result.Target})
+	//c.SucData(myPet.Result.List.(fst.KV))
+	//c.SucData(fst.KV{"result": myPet.List})
+	c.Json(200, myPet.List)
+	//c.SucData(fst.KV{"gson": myPet.Result.List})
 	//c.SucData(fst.KV{"records": myUsers})
 }
 
@@ -127,22 +127,20 @@ func QueryUsersCache(c *fst.Context) {
 	// 自动缓存结果集
 	myPet := &sqlx.SelectPet{
 		//Sql:    "select * from sys_user where age=? and status=?",
-		Target:  &myUsers,
-		Columns: "id,name,age,status",
-		Where:   "age=? and status=?",
-		Args:    []any{38, 3},
-		Cache: &sqlx.PetCache{
-			ExpireS:   3600,
-			CacheType: sqlx.CacheRedis,
-		},
-		Result: &sqlx.PetResult{GsonStr: true},
+		List:         &myUsers,
+		Columns:      "id,name,age,status",
+		Where:        "age=? and status=?",
+		Args:         []any{38, 3},
+		GsonNeed:     true,
+		CacheExpireS: 3600,
+		CacheType:    sqlx.CacheRedis,
 	}
 	ct := cf.Zero.QueryPet(myPet)
 	//_ = cf.Zero.DeletePetCache(myPet)
 	//logx.Infos(ct)
 
 	cst.PanicIf(ct <= 0, "没有记录")
-	//c.SucData(myPet.Result.Target.(fst.KV))
-	//c.SucData(fst.KV{"result": myPet.Target})
-	c.SucData(cst.KV{"result": myPet.Result.Target})
+	//c.SucData(myPet.Result.List.(fst.KV))
+	//c.SucData(fst.KV{"result": myPet.List})
+	c.SucData(cst.KV{"result": myPet.List})
 }

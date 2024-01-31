@@ -11,7 +11,7 @@ import (
 
 type ProjectConfig struct {
 	WebServerCnf   fst.GfConfig     `v:"required"`
-	RedisSessCnf   sdx.RedisSessCnf `v:"required"`
+	SessionCnf     sdx.SessionCnf   `v:"required"`
 	MysqlGoZeroCnf orm.MysqlConnCnf `v:"required"`
 	CurrAppParams  appParams        `v:"required"`
 }
@@ -25,7 +25,7 @@ func MustAppConfig() {
 
 	logConfig := &AppCnf.WebServerCnf.LogConfig
 	logConfig.AppName = AppCnf.WebServerCnf.AppName
-	logConfig.ServerNo = AppCnf.WebServerCnf.ServerNo
+	logConfig.ServerName = AppCnf.WebServerCnf.ServerName
 	logx.MustSetup(logConfig)
 	logx.Info("Hello " + logConfig.AppName + ", config data loaded.")
 

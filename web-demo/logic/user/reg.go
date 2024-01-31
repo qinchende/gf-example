@@ -13,7 +13,7 @@ import (
 func RegByMobile(c *fst.Context) {
 	// 通过自己判断字段合法性
 	sVCode := c.Sess.Get("v_code")
-	pVCode := c.Pms["v_code"]
+	pVCode := c.GetMust("v_code")
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
 		c.FaiMsg("invalid mobile valid code")
 		return
@@ -89,7 +89,7 @@ func RegByMobile(c *fst.Context) {
 
 	records := new([]cst.KV)
 	ct = cf.Zero.QueryPet(&sqlx.SelectPet{
-		Target: records,
+		List: records,
 		//Sql: "select * from sys_user where age=? and status=0",
 		Table:   "sys_user",
 		Columns: "id,name,age,status",
@@ -110,7 +110,7 @@ func RegByMobile(c *fst.Context) {
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"陈德","account":"sdx","age":38,"v_code":"123456","email":"cd@qq.com","tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/reg_by_email?ids=abc\&ids=123
 func RegByEmail(c *fst.Context) {
 	sVCode := c.Sess.Get("v_code")
-	pVCode := c.Pms["v_code"]
+	pVCode := c.GetMust("v_code")
 	if sVCode == nil || sVCode == "" || pVCode == nil || pVCode == "" || sVCode != pVCode {
 		c.FaiMsg("invalid mobile valid code")
 		return

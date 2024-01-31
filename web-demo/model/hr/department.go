@@ -11,8 +11,8 @@ type SysDepartment struct {
 }
 
 //
-//func (*SysDepartment) GfAttrs(parent orm.OrmStruct) *orm.ModelAttrs {
-//	return &orm.ModelAttrs{
+//func (*SysDepartment) GfAttrs(parent orm.OrmStruct) *orm.TableAttrs {
+//	return &orm.TableAttrs{
 //		TableName: "sys_department",
 //	}
 //}

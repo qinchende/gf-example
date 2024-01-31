@@ -7,10 +7,10 @@ import (
 )
 
 func InitModelsAttrs() {
-	orm.ShareModelAttrs(modelAttrsList)
+	orm.ShareTableAttrs(modelAttrsList)
 }
 
-var modelAttrsList = map[string]*orm.ModelAttrs{
+var modelAttrsList = map[string]*orm.TableAttrs{
 	"hr.SysUser":              {CacheAll: true, ExpireS: 3600 * 0.1},
 	"hr.Title":                {CacheAll: true, ExpireS: 3600 * 0.1},
 	"hr.SysDepartment":        {CacheAll: true, ExpireS: 3600 * 0.1, TableName: "sys_department"},
