@@ -13,7 +13,7 @@ type SysUser struct {
 	Email    string `pms:"email" v:"match=email"`          // 可以为空，否则需要匹配email类型
 }
 
-func (u *SysUser) GfAttrs(parent orm.OrmStruct) *orm.ModelAttrs {
+func (u *SysUser) GfAttrs(parent orm.OrmStruct) *orm.TableAttrs {
 	mAttr := u.CommonFields.GfAttrs(u)
 	mAttr.TableName = "sys_user"
 	return mAttr

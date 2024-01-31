@@ -11,11 +11,11 @@ import (
 // curl -H "Content-Type: application/json" -X GET --data '{}' http://127.0.0.1:8078/request_url
 // curl -H "Content-Type: application/json" -X GET --data '{"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/request_url
 func RequestURL(c *fst.Context) {
-	kv, err := httpx.DoRequestGetKVCtx(c.Req.Context(), &httpx.RequestPet{
+	kv, err := httpx.DoRequestGetKVCtx(c.Req.Raw.Context(), &httpx.RequestPet{
 		//ProxyUrl:  cf.Data.ProxyUrl,
 		Method:    http.MethodGet,
 		Url:       "http://127.0.0.1:8078/request_test_data",
-		QueryArgs: cst.KV{"tok": "t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"},
+		QueryArgs: cst.WebKV{"tok": "t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"},
 		//BodyArgs: cst.KV{"tok": "t:NDhDdjdwMEdaWTZoamtnY01o.RALE84mO4YGpAFdPfFEO8gi4NFcvH1kQV9IWmfaJuyc"},
 	})
 	time.Sleep(99 * time.Millisecond)

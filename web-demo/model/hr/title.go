@@ -11,8 +11,8 @@ type Title struct {
 	Desc  string `pms:"desc" v:""`
 }
 
-func (t *Title) GfAttrs(orm.OrmStruct) *orm.ModelAttrs {
-	return &orm.ModelAttrs{
+func (t *Title) GfAttrs(orm.OrmStruct) *orm.TableAttrs {
+	return &orm.TableAttrs{
 		TableName: "sys_title",
 	}
 }
