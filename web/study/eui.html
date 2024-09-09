@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Import style -->
+    <link rel="stylesheet" href="../res/ele-plus.css"/>
+    <!-- Import Vue 3 -->
+    <script src="../res/vue-3.4.21.js"></script>
+    <script src="../res/vue-router-4.0.13.js"></script>
+    <!-- Import axios ajax -->
+    <script src="../res/axios-1.6.7.js"></script>
+    <!-- Import component library -->
+    <script src="../res/ele-plus-2.5.6.js"></script>
+</head>
+<body>
+
+<style>
+    #app222 {
+        text-align: center;
+        align-content: center;
+        vertical-align: center;
+    }
+
+    div.container {
+        background-color: #bfbfbf;
+        margin-top: 20px;
+        height: 300px;
+    }
+
+    div.poetry {
+        margin-top: 10px;
+        height: 300px;
+        background-color: darkolivegreen;
+    }
+</style>
+
+<div id="app222">
+    <!-- 默认渲染成a标签 -->
+    <router-link to="/home">首页</router-link>
+    |
+    <router-link to="/list" custom v-slot="{navigate}">
+        <button @click="navigate" @keypress.enter="navigate">古诗赏析</button>
+    </router-link>
+    |
+    <router-link to="/details">详情</router-link>
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</div>
+
+<template id="tmp1">
+    <div>
+        <h3>列表内容</h3>
+        <router-link to="/list/poetry1">古诗1</router-link>
+        |
+        <router-link to="/list/poetry2">古诗2</router-link>
+        <div class="poetry">
+            <router-view></router-view>
+        </div>
+    </div>
+</template>
+
+
+<script>
+    const home = {template: '<div>home组件的内容</div>'};
+    const list = {template: '#tmp1'};
+    const details = {template: '<div>details组件的内容</div>'};
+
+    const poetry1 = {template: '<div>桃花潭水深千尺</div>'};
+    const poetry2 = {template: '<div>与君同消万古愁</div>'};
+
+    const routes = [
+        {path: '/', redirect: '/list'},
+        {path: '/home', component: home},
+        {
+            path: '/list',
+            component: list,
+            children: [{
+                path: 'poetry1',
+                component: poetry1
+            }, {
+                path: 'poetry2',
+                component: poetry2
+            }]
+        },
+        {path: '/details', component: details},
+    ];
+
+    const router = VueRouter.createRouter({
+        //提供要实现的history实现。为了方便起见，这里使用hash history
+        history: VueRouter.createWebHashHistory(),
+        routes//简写，相当于routes：routes
+    });
+
+    Vue.createApp({}).use(router).mount('#app222')
+</script>
+
+</body>
+</html>

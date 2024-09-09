@@ -1,0 +1,21 @@
+<div id="app">
+    <p>{{ message }}</p>
+</div>
+
+<script>
+    const app = {
+    data() {
+    return {
+    message: "My name is chende.",
+    info: 'Ajax 测试!!'
+}
+},
+    mounted() {
+    axios.get('http://127.0.0.1:8019/request_test_data')
+    .then(resp => (this.message = resp.data))
+    .catch(err => (console.log(err)))
+}
+}
+
+    Vue.createApp(app).mount('#app')
+</script>
