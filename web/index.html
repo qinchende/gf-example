@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoFast-Demo</title>
+    <!-- Import style -->
+    <link rel="stylesheet" href="res/ele-plus.css"/>
+    <!-- Import Vue 3 -->
+    <script src="res/vue-3.4.21.js"></script>
+    <script src="res/vue-router-4.0.13.js"></script>
+    <!-- Import axios ajax -->
+    <script src="res/axios-1.6.7.js"></script>
+    <!-- Import component library -->
+    <script src="res/ele-plus-2.5.6.js"></script>
+</head>
+<body>
+
+<!-- Pages base resource -->
+<script src="pages/base.js"></script>
+<link rel="stylesheet" href="pages/style.css"/>
+
+<div id="app111">
+    <router-link to="/index">首页</router-link>
+    |
+    <router-link to="/login">登录</router-link>
+    |
+    <router-link to="/login_logs">登录日志</router-link>
+    <p></p>
+    <div class="container">
+        <router-view></router-view>
+    </div>
+</div>
+
+<script type="module">
+    import HomeView from './pages/home.js'
+    import LoginView from './pages/login.js'
+    import LoginLogsView from './pages/login-log.js'
+
+    const routes = [
+        {path: '/', redirect: '/index'},
+        {path: '/index', component: HomeView},
+        {path: '/login', component: LoginView},
+        {path: '/login_logs', component: LoginLogsView},
+    ];
+    const router = VueRouter.createRouter({
+        history: VueRouter.createWebHashHistory(),
+        routes: routes
+    });
+    Vue.createApp({}).use(router).mount('#app111')
+</script>
+
+</body>
+</html>
