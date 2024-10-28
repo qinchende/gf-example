@@ -1,4 +1,4 @@
-package server
+package web
 
 import (
 	"gf-example/server/model"
@@ -6,7 +6,7 @@ import (
 	"github.com/qinchende/gofast/fst"
 )
 
-func AppEnhance(app *fst.GoFast) {
+func StartEnd(app *fst.GoFast) *fst.GoFast {
 	app.OnReady(func(fast *fst.GoFast) {
 		logx.Info("App is ready.")
 		model.InitModelsAttrs()
@@ -17,4 +17,6 @@ func AppEnhance(app *fst.GoFast) {
 	app.OnClose(func(fast *fst.GoFast) {
 		logx.Info("App is closed.")
 	})
+
+	return app
 }

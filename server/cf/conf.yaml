@@ -1,0 +1,45 @@
+ServerCnf:
+  AppName: GoFastExample
+  HostName: Ter55          # 分布式部署的时候，标记不同终端
+  ListenAddr: 0.0.0.0:8019
+  RunMode: debug           # product | test | debug
+  WebConfig:
+    PrintRouteTrees: false # 打印路由信息，这个要在debug模式下才会起作用
+    CheckOtherMethodRoute: true
+  LogConfig:
+    LogMedium: console  # console | file | volume
+    LogLevel: debug     # 指定日志级别
+    LogStyle: sdx-json  # 日志模板类型
+    FileFolder: _logs_  # 日志文件夹
+    FileSplit: 160      # 拆分文件标记（160: info+stat+timer）
+
+SdxMidCnf:
+  EnableTimeout: false   # 超时自动返回。（建议调试时禁止）
+  EnableTrack: true      # 启动追踪系统
+  EnableShedding: true   # 降载
+  MaxConnections: 1000
+  PrintSysState: false
+  PrintRouteState: false
+
+SessionCnf:
+  PrefixSessKey: "sdx:"
+  UidField: "uid"
+  Secret: xxx42f2dsp9XdXYZ
+  RedisConn:
+    SentinelNodes:
+      - 10.10.13.55:26300
+      - 10.10.13.56:26300
+    MasterName: N44301
+    Pass: fxi2982x3d
+
+MysqlDemoCnf:
+  ConnStr: root:trf.d.z@tcp(10.10.13.55:3306)/gfdemo?charset=utf8mb4&parseTime=True&loc=Local
+  RedisNodes:
+    - Addr=10.10.13.55:44301&Pass=fxi2982x3d&Weight=110
+    - Addr=10.10.13.55:44301&Pass=fxi2982x3d&Weight=110
+
+# APP中需要用到的配置参数都放这里
+CurrAppParams:
+  MyHost: http://127.0.0.1:8018
+  ProxyUrl:
+  MmsSendUrl: http://10.10.13.55:8081/send

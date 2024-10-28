@@ -9,25 +9,30 @@ import (
 	"github.com/qinchende/gofast/sdx"
 )
 
-type ProjectConfig struct {
-	WebServerCnf  fst.AppConfig    `v:"must"`
-	SessionCnf    sdx.SessionCnf   `v:"must"`
-	MysqlDemoCnf  orm.MysqlConnCnf `v:"must"`
-	CurrAppParams appParams        `v:"must"`
+type AppConfig struct {
+	ServerCnf     fst.ServerConfig  `v:"must"`
+	SdxMidCnf     sdx.MidConfig     `v:"must"`
+	SessionCnf    sdx.SessionConfig `v:"must"`
+	MysqlDemoCnf  orm.MysqlConfig   `v:"must"`
+	CurrAppParams appParams         `v:"must"`
 }
 
-var AppCnf ProjectConfig
+var Cnf AppConfig
 
-func MustAppConfig() {
-	var cnfFile = flag.String("f", "cf/env.yaml", "-f env.[yaml|yml|json]")
+func MustInitConfig() {
+	var cnfFile = flag.String("f", "cf/conf.yaml", "-f conf.[yaml|yml|json]")
 	flag.Parse()
-	conf.MustLoad(*cnfFile, &AppCnf)
+	conf.MustLoad(*cnfFile, &Cnf)
 
-	logConfig := &AppCnf.WebServerCnf.LogConfig
-	logConfig.AppName = AppCnf.WebServerCnf.AppName
-	logConfig.ServerName = AppCnf.WebServerCnf.ServerName
-	logx.MustSetup(logConfig)
-	logx.Info("Hello " + logConfig.AppName + ", config data loaded.")
+	// 最先初始化日志系统
+	logCnf := &Cnf.ServerCnf.LogConfig
+	logCnf.AppName = Cnf.ServerCnf.AppName
+	logCnf.HostName = Cnf.ServerCnf.HostName
+	logx.MustSetup(logCnf)
+	logx.Info("Hello " + logCnf.AppName + ", config data loaded.")
+
+	// 初始化中间件控制参数
+	sdx.SetMidConfig(&Cnf.SdxMidCnf)
 
 	initAppParams()
 	initRedisForSession()

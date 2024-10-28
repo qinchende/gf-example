@@ -16,13 +16,13 @@ func main() {
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 func loadConfigNew() {
-	var AppCnf cf.ProjectConfig
+	var AppCnf cf.AppConfig
 	var cnfFile = flag.String("f", "../cf/env.yaml", "-f env.[yaml|yml|json]")
 
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
-	logx.MustSetup(&AppCnf.WebServerCnf.LogConfig)
-	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
+	logx.MustSetup(&AppCnf.ServerCnf.LogConfig)
+	logx.Info("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
 	cf.InitMysql()
 }
 

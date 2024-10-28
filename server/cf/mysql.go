@@ -8,5 +8,5 @@ import (
 var DDemo *sqlx.OrmDB
 
 func InitMysql() {
-	DDemo = orm.OpenMysql(&AppCnf.MysqlDemoCnf)
+	DDemo = orm.OpenMysql(&Cnf.MysqlDemoCnf)
 }

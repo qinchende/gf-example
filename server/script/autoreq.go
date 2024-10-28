@@ -5,9 +5,9 @@ import (
 	"gf-example/server/cf"
 	"github.com/qinchende/gofast/aid/conf"
 	"github.com/qinchende/gofast/aid/exec"
-	"github.com/qinchende/gofast/aid/lang"
 	"github.com/qinchende/gofast/aid/logx"
 	"github.com/qinchende/gofast/core/cst"
+	"github.com/qinchende/gofast/core/lang"
 	"github.com/qinchende/gofast/fst/httpx"
 	"math/rand"
 	"net/http"
@@ -43,20 +43,20 @@ var reduceLog2 *exec.Reduce
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 func loadConfigDel() {
-	var AppCnf cf.ProjectConfig
+	var AppCnf cf.AppConfig
 	var cnfFile = flag.String("f", "../cf/env.yaml", "-f env.[yaml|yml|json]")
 
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
 
 	// reset log config
-	pLogConfig := &AppCnf.WebServerCnf.LogConfig
+	pLogConfig := &AppCnf.ServerCnf.LogConfig
 	pLogConfig.AppName += "-autoreq"
 	pLogConfig.FileFolder = "../" + pLogConfig.FileFolder
 	pLogConfig.LogMedium = "console"
 
 	logx.MustSetup(pLogConfig)
-	logx.Info("Hello " + AppCnf.WebServerCnf.AppName + ", config all ready.")
+	logx.Info("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
 	cf.InitMysql()
 
 	reduceLog1 = exec.NewReduce(time.Second * 5)

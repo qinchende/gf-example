@@ -4,7 +4,7 @@ import (
 	"gf-example/server/cf"
 	"gf-example/server/model/acc"
 	"github.com/qinchende/gofast/aid/hashx"
-	"github.com/qinchende/gofast/aid/lang"
+	"github.com/qinchende/gofast/core/lang"
 	"github.com/qinchende/gofast/fst"
 )
 
