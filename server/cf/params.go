@@ -10,5 +10,5 @@ type appParams struct {
 var DParams *appParams
 
 func initAppParams() {
-	DParams = &AppCnf.CurrAppParams
+	DParams = &Cnf.CurrAppParams
 }

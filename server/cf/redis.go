@@ -9,8 +9,8 @@ var DRedisTask *redis.GfRedis // 记录任务信息
 
 // init sdx session with redis store
 func initRedisForSession() {
-	DRedisTask = redis.NewGoRedis(&AppCnf.SessionCnf.RedisConn)
+	DRedisTask = redis.NewGoRedis(&Cnf.SessionCnf.RedisConn)
 	sdx.SetSessionDB(&sdx.SessionDB{
-		SessionCnf: AppCnf.SessionCnf,
+		SessionConfig: Cnf.SessionCnf,
 	})
 }

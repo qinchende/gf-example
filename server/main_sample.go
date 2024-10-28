@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"fmt"
@@ -12,26 +12,26 @@ import (
 	"time"
 )
 
-var handler = func(str string) func(c *fst.Context) {
-	return func(c *fst.Context) {
-		log.Println(str)
-	}
-}
-
-var handlerRender = func(str string) func(c *fst.Context) {
-	return func(c *fst.Context) {
-		log.Println(str)
-		c.FaiData(cst.KV{"data": str})
-	}
-}
-
 func MainSample() {
-	appCfg := &fst.AppConfig{
+	var handler = func(str string) func(c *fst.Context) {
+		return func(c *fst.Context) {
+			log.Println(str)
+		}
+	}
+
+	var handlerRender = func(str string) func(c *fst.Context) {
+		return func(c *fst.Context) {
+			log.Println(str)
+			c.FaiData(cst.KV{"data": str})
+		}
+	}
+
+	appCfg := &fst.ServerConfig{
 		RunMode: "debug",
 	}
-	_ = conf.LoadConfigFromJsonBytes(&appCfg.WebConfig, []byte("{}"))
-	_ = conf.LoadConfigFromJsonBytes(&appCfg.LogConfig, []byte("{}"))
-	_ = conf.LoadConfigFromJsonBytes(&appCfg.SdxConfig, []byte("{}"))
+	_ = conf.LoadFromJson(&appCfg.WebConfig, []byte("{}"))
+	_ = conf.LoadFromJson(&appCfg.LogConfig, []byte("{}"))
+	_ = conf.LoadFromJson(&appCfg.SdxConfig, []byte("{}"))
 	appCfg.WebConfig.PrintRouteTrees = true
 	appCfg.LogConfig.LogMedium = "console"
 	appCfg.LogConfig.LogLevel = "debug"
@@ -49,7 +49,7 @@ func MainSample() {
 			log.Println("app enter after 1")
 		}
 	})
-	app.UseGlobal(sdx.SuperHandlers)
+	app.Apply(sdx.SuperHandlers)
 	app.Before(sdx.PmsParser) // 解析请求参数，构造 ctx.Pms
 
 	// 根路由

@@ -6,10 +6,30 @@ import (
 	"gf-example/server/logic/auth"
 	"gf-example/server/logic/nosess"
 	"gf-example/server/logic/user"
+	"gf-example/server/router/fit"
+	"gf-example/server/router/web"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/sdx"
 	"github.com/qinchende/gofast/sdx/mid"
 )
+
+func LoadRoutes(app *fst.GoFast) *fst.GoFast {
+	// 1. 加载一些组合中间件
+	app.Apply(web.StartEnd).Apply(sdx.SuperHandlers)
+
+	// 2. 演示添加第一级中间件，第一级中间件不带fst.Context，而是原始的[req, res]
+	app.UseHttpHandler(fit.RawHandlerDemo)
+
+	// 3. 根路由，中间件。
+	// Note: 匹配到路由之后开始走这里的逻辑，执行过滤器
+	app.Before(sdx.PmsParser) // 解析请求参数，构造 ctx.Pms
+	app.AfterMatch()          // 匹配路由之后，开始执行中间件链之前
+
+	// 4. url api routes lists
+	apiRoutes(app)
+
+	return app
+}
 
 func apiRoutes(app *fst.GoFast) {
 	app.BeforeSend(logic.AddHeaders)
