@@ -8,14 +8,14 @@ import (
 
 func StartEnd(app *fst.GoFast) *fst.GoFast {
 	app.OnReady(func(fast *fst.GoFast) {
-		logx.Info("App is ready.")
+		logx.Info().SendMsg("App is ready.")
 		model.InitModelsAttrs()
 		//time.Sleep(3 * time.Second)
 		//runtime.GC() // 主动垃圾回收，看是否有不安全内存操作
 	})
 
 	app.OnClose(func(fast *fst.GoFast) {
-		logx.Info("App is closed.")
+		logx.Info().SendMsg("App is closed.")
 	})
 
 	return app

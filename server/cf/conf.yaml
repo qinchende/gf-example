@@ -4,14 +4,14 @@ ServerCnf:
   ListenAddr: 0.0.0.0:8019
   RunMode: debug           # product | test | debug
   WebConfig:
-    PrintRouteTrees: false # 打印路由信息，这个要在debug模式下才会起作用
+    PrintRouteTrees: true # 打印路由信息，这个要在debug模式下才会起作用
     CheckOtherMethodRoute: true
   LogConfig:
-    LogMedium: console  # console | file | volume
-    LogLevel: debug     # 指定日志级别
-    LogStyle: sdx-json  # 日志模板类型
-    FileFolder: _logs_  # 日志文件夹
-    FileSplit: 160      # 拆分文件标记（160: info+stat+timer）
+    LogMedium: console        # 日志存储介质 console|file|volume|custom
+    LogLevel: TRC             # 指定日志级别 TRC|DBG|INF|WRN|ERR|Discard
+    LogStyle: sdx             # 日志模板类型 sdx|json|cdo|custom
+    FilePath: _logs_          # 日志文件夹
+    FileSplit: info|stat|err  # 日志记录在那些不同的文件
 
 SdxMidCnf:
   EnableTimeout: false   # 超时自动返回。（建议调试时禁止）

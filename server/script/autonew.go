@@ -10,7 +10,7 @@ import (
 
 func main() {
 	loadConfigNew()
-	logx.Info("AutoNew, I'm running......")
+	logx.Info().SendMsg("AutoNew, I'm running......")
 	autoCreateRecords()
 }
 
@@ -21,8 +21,8 @@ func loadConfigNew() {
 
 	flag.Parse()
 	conf.MustLoad(*cnfFile, &AppCnf)
-	logx.MustSetup(&AppCnf.ServerCnf.LogConfig)
-	logx.Info("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
+	logx.SetupDefault(&AppCnf.ServerCnf.LogConfig)
+	logx.Info().SendMsg("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
 	cf.InitMysql()
 }
 

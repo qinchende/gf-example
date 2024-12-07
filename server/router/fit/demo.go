@@ -9,7 +9,7 @@ import (
 
 func RawHandlerDemo(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		logx.Info("HTTP middleware fit.my-demo.")
+		logx.Info().SendMsg("HTTP middleware fit.my-demo.")
 		next(w, r)
 	}
 }

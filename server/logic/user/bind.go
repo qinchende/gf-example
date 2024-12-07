@@ -6,19 +6,19 @@ import (
 )
 
 func BeforeBindDemo(c *fst.Context) {
-	logx.Info("ghost.auth.BeforeBindDemo")
+	logx.Info().SendMsg("ghost.auth.BeforeBindDemo")
 }
 
 func AfterBindDemo(c *fst.Context) {
-	logx.Info("ghost.auth.AfterBindDemo")
+	logx.Info().SendMsg("ghost.auth.AfterBindDemo")
 }
 
 func BeforeBindDemoSend(c *fst.Context) {
-	logx.Info("ghost.auth.BeforeBindDemoSend")
+	logx.Info().SendMsg("ghost.auth.BeforeBindDemoSend")
 }
 
 func AfterBindDemoSend(c *fst.Context) {
-	logx.Info("ghost.auth.AfterBindDemoSend")
+	logx.Info().SendMsg("ghost.auth.AfterBindDemoSend")
 }
 
 // curl -H "Content-Type: application/json" -d '{"name":"bmc","account":"rmb","age":38}' http://127.0.0.1:8078/bind_demo?first=chen\&last=de\&tok=t:THNqNjVFTU5sbkNtd0N3OXRp.6UWKmsqPhnrGAbOk7zeRtsUW0uhptj4gI5/FiiIylAs

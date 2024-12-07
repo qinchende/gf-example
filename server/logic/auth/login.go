@@ -23,7 +23,7 @@ func SendPhoneCode(c *fst.Context) {
 }
 
 func BeforeLogin(c *fst.Context) {
-	logx.Info("Handler auth.BeforeLogin")
+	logx.Info().SendMsg("Handler auth.BeforeLogin")
 }
 
 // curl -H "Content-Type: application/json" -X GET --data '{"name":"bmc","account":"rmb","age":37,"tok":"t:Q0JCM3R4dHhqWDZZM29FbTZr.xPEXaKSVK9nKwmhzOPIQzyqif1SnOhw68vTPj6024s"}' http://127.0.0.1:8078/login?account=admin\&pass=abc

@@ -24,7 +24,7 @@ const (
 
 func main() {
 	loadConfigDel()
-	logx.Info("AutoRequest, I'm running......")
+	logx.Info().SendMsg("AutoRequest, I'm running......")
 
 	// 多个线程发起请求
 	goWait := sync.WaitGroup{}
@@ -34,7 +34,7 @@ func main() {
 	}
 	goWait.Wait()
 	logx.InfoF("Request times: %d, Suc times %d", loopCount, sucCount)
-	logx.Info("All threads finished. Now exit. bye bye...")
+	logx.Info().SendMsg("All threads finished. Now exit. bye bye...")
 	time.Sleep(2 * time.Second) // 确保退出之前打印日志
 }
 
@@ -52,11 +52,11 @@ func loadConfigDel() {
 	// reset log config
 	pLogConfig := &AppCnf.ServerCnf.LogConfig
 	pLogConfig.AppName += "-autoreq"
-	pLogConfig.FileFolder = "../" + pLogConfig.FileFolder
+	pLogConfig.FilePath = "../" + pLogConfig.FilePath
 	pLogConfig.LogMedium = "console"
 
-	logx.MustSetup(pLogConfig)
-	logx.Info("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
+	logx.SetupDefault(pLogConfig)
+	logx.Info().SendMsg("Hello " + AppCnf.ServerCnf.AppName + ", config all ready.")
 	cf.InitMysql()
 
 	reduceLog1 = exec.NewReduce(time.Second * 5)

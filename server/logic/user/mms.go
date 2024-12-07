@@ -4,8 +4,8 @@ import (
 	"gf-example/server/cf"
 	"github.com/mojocn/base64Captcha"
 	"github.com/qinchende/gofast/aid/randx"
-	"github.com/qinchende/gofast/aid/validx"
 	"github.com/qinchende/gofast/core/cst"
+	"github.com/qinchende/gofast/core/dts"
 	"github.com/qinchende/gofast/fst"
 	"github.com/qinchende/gofast/fst/httpx"
 	"net/http"
@@ -31,7 +31,7 @@ func CaptchaPhoto(c *fst.Context) {
 // curl -H "Content-Type: application/x-www-form-urlencoded" -X GET http://127.0.0.1:8019/mobile_valid_code?mobile=13466663333
 func MobileValidCode(c *fst.Context) {
 	mobile := c.GetStringMust("mobile")
-	c.PanicIf(!validx.IsMobile(mobile), "请正确输入手机号")
+	c.PanicIf(!dts.IsMobile(mobile), "请正确输入手机号")
 
 	// Note: 1. 生成验证码 2. 调用短信通道发送
 	vCode := randx.RandomNumbers(6)

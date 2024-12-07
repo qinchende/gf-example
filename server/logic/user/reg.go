@@ -21,7 +21,7 @@ func RegByMobile(c *fst.Context) {
 
 	u := acc.SysUser{}
 	cst.PanicIfErr(c.Bind(&u))
-	logx.Infos(u)
+	logx.Info().Any("user", u)
 
 	//// 方式一：拼接sql语句。
 	//// 注册，清理必要的数据，返回成功
@@ -52,7 +52,7 @@ func RegByMobile(c *fst.Context) {
 	// 方式三：GoFast自带ORM功能
 	ct := cf.DDemo.Insert(&u)
 	if ct > 0 {
-		logx.InfoF("Insert success, new id: %d", u.ID)
+		logx.Info().SendMsgF("Insert success, new id: %d", u.ID)
 	}
 
 	u.Name = "chende"
@@ -66,25 +66,25 @@ func RegByMobile(c *fst.Context) {
 
 	newUser := acc.SysUser{}
 	ct = cf.DDemo.QueryPrimary(&newUser, u.ID)
-	logx.Infos(newUser)
+	logx.Info().Any("user", newUser)
 
 	ct = cf.DDemo.QueryRow(&newUser, "id=?", u.ID)
-	logx.Infos(newUser)
+	logx.Info().Any("user", newUser)
 
 	myUsers := make([]*acc.SysUser, 0)
 	ct = cf.DDemo.QueryRows(&myUsers, "age=? and status=?", 91, 1)
 	if len(myUsers) > 0 {
-		logx.Infos(myUsers[0])
+		logx.Info().Any("user", myUsers[0])
 	}
 
 	myUsers2 := new([]*acc.SysUser)
 	ct = cf.DDemo.QueryRows(myUsers2, "age=? and status=?", 38, 0)
 	if len(*myUsers2) > 0 {
-		logx.Infos((*myUsers2)[0])
+		logx.Info().Any("user", (*myUsers2)[0])
 	}
 	ct = cf.DDemo.QueryRows2(myUsers2, "age,name", "age=78 and status=0 limit 5")
 	if len(*myUsers2) > 0 {
-		logx.Infos((*myUsers2)[0])
+		logx.Info().Any("user", (*myUsers2)[0])
 	}
 
 	records := new([]cst.KV)
@@ -99,7 +99,7 @@ func RegByMobile(c *fst.Context) {
 		Args:    []any{78},
 	})
 	if ct > 0 {
-		logx.Infos((*records)[0])
+		logx.Info().Any("kvs", (*records)[0])
 	}
 
 	ct = cf.DDemo.Delete(&u)
@@ -118,7 +118,7 @@ func RegByEmail(c *fst.Context) {
 
 	u := acc.SysUser{}
 	cst.PanicIfErr(c.Bind(&u))
-	logx.Infos(u)
+	logx.Info().Any("user", u)
 
 	// 第一种事务
 	DDemo := cf.DDemo.TransBegin()
@@ -126,7 +126,7 @@ func RegByEmail(c *fst.Context) {
 	DDemo.Insert(&u)
 	myUsers := make([]*acc.SysUser, 0)
 	ct := DDemo.QueryRows(&myUsers, "age=? and status=?", 38, 3)
-	logx.Infos(ct)
+	logx.Info().Int("count", int(ct))
 
 	// 第二种事务
 	//myUsers := make([]*acc.SysUser, 0)

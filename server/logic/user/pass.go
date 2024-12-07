@@ -16,8 +16,8 @@ func ResetPass(c *fst.Context) {
 	ct := cf.DDemo.QueryPrimary(&uPass, c.Sess.GetUid())
 	c.PanicIf(ct <= 0, "找不到用户")
 
-	salt := lang.BTS(hashx.Md5(lang.STB(lang.ToString(uPass.ID + int64(110)))))
-	uPass.Sha1Pass = lang.BTS(hashx.Sha1(lang.STB(salt + newHashPass)))
+	salt := lang.B2S(hashx.Md5(lang.S2B(lang.ToString(uPass.ID + int64(110)))))
+	uPass.Sha1Pass = lang.B2S(hashx.Sha1(lang.S2B(salt + newHashPass)))
 	ct = cf.DDemo.UpdateColumns(&uPass, "hash_pass")
 	c.IfSucFai(ct > 0, "密码修改成功", "新密码保存失败")
 }

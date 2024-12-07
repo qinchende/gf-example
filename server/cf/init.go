@@ -22,14 +22,12 @@ var Cnf AppConfig
 func MustInitConfig() {
 	var cnfFile = flag.String("f", "cf/conf.yaml", "-f conf.[yaml|yml|json]")
 	flag.Parse()
-	conf.MustLoad(*cnfFile, &Cnf)
+	conf.MustLoad(&Cnf, *cnfFile)
 
 	// 最先初始化日志系统
 	logCnf := &Cnf.ServerCnf.LogConfig
-	logCnf.AppName = Cnf.ServerCnf.AppName
-	logCnf.HostName = Cnf.ServerCnf.HostName
-	logx.MustSetup(logCnf)
-	logx.Info("Hello " + logCnf.AppName + ", config data loaded.")
+	logx.SetupDefault(logCnf)
+	logx.Info().SendMsg("Hello " + logCnf.AppName + ", config data loaded.")
 
 	// 初始化中间件控制参数
 	sdx.SetMidConfig(&Cnf.SdxMidCnf)

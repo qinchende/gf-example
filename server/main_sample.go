@@ -31,15 +31,14 @@ func MainSample() {
 	}
 	_ = conf.LoadFromJson(&appCfg.WebConfig, []byte("{}"))
 	_ = conf.LoadFromJson(&appCfg.LogConfig, []byte("{}"))
-	_ = conf.LoadFromJson(&appCfg.SdxConfig, []byte("{}"))
 	appCfg.WebConfig.PrintRouteTrees = true
 	appCfg.LogConfig.LogMedium = "console"
 	appCfg.LogConfig.LogLevel = "debug"
 	appCfg.LogConfig.LogStyle = "sdx-json"
-	appCfg.LogConfig.FileFolder = "_logs_"
+	appCfg.LogConfig.FilePath = "_logs_"
 
 	app := fst.CreateServer(appCfg)
-	logx.MustSetup(&appCfg.LogConfig)
+	logx.SetupDefault(&appCfg.LogConfig)
 
 	// 拦截器，微服务治理 ++++++++++++++++++++++++++++++++++++++
 	app.UseHttpHandler(func(next http.HandlerFunc) http.HandlerFunc {

@@ -12,7 +12,7 @@ func main() {
 	app := fst.CreateServer(&cf.Cnf.ServerCnf) // Step2. 创建 APP Server
 	app.Apply(router.LoadRoutes)               // Step3. 加载中间件、路由
 	app.Listen()                               // Step4. 启动Server Listen, 等待请求
-	logx.InfoF("Listening on %s", app.ListenAddr)
+	logx.Info().SendMsg("Listening on " + app.ListenAddr)
 }
 
 //func main() {
